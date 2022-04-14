@@ -1,0 +1,1 @@
+const figures = ['R', 'k', 'B', 'K', 'Q', 'P']
