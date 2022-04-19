@@ -15,7 +15,7 @@ export class ChessField extends HTMLElement {
         mountpoint.append(this);
         this.onclick = async () => {
             console.log(`${ this.piece } | ${ this.color } | ${ this.listenerMode } `);
-            if (this.piece != '' && this.listenerMode === 'initial') {
+            if (this.piece != '' && this.listenerMode === 'initial' && this.color === query`chessboard-element`.color) {
                 queryAll`chessfield-element`.forEach((field)=> {
                     field.classList.remove('selected'); 
                     field.classList.remove('possible');

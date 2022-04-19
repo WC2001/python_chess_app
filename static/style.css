@@ -64,5 +64,154 @@ chessfield-element > div {
   background: #dfe7bb !important;
 }
 
+color-pop-up-element, gameover-pop-up-element {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  z-index: 99;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(25px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: row nowrap;
+}
+color-pop-up-element > .pop-up-container,
+gameover-pop-up-element > .pop-up-container{
+  background: rgba(243,243,243);
+  width: 60%;
+  height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: row nowrap;
+}
+
+color-pop-up-element > .pop-up-container > *,
+gameover-pop-up-element > .pop-up-container > *{
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: row nowrap;
+  font-size: 5vw;
+  transition: .5s;
+  height: 100%;
+}
+
+color-pop-up-element > .pop-up-container > *:hover {
+  background: rgba(160, 233, 193, 0.5);
+  cursor: pointer;
+}
+
+gameover-pop-up-element > .pop-up-container > h1 {
+  width: 100% !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: rgba(160, 233, 193, 0.5);
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 900;
+  font-family: "Roboto Light", sans-serif;
+  font-size: 2rem;
+  padding-inline: 2rem;
+
+}
+
+gameover-pop-up-element > .pop-up-container {
+  flex-flow: row wrap;
+}
+
+move-list-element {
+  position: fixed;
+  z-index: 2;
+  top: 25%;
+  right: 1rem;
+  width: 20%;
+  height: 50%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 50px auto;
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+}
+
+move-list-element > .titleW {
+  background: #fff;
+  color: #000;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  height: 50px;
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+}
+
+move-list-element > .titleB {
+  background: #000;
+  color: #fff;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  height: 50px;
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+}
+
+move-list-element > .white {
+  height: calc(100% - 50px);
+  overflow-y: scroll;
+  display: block;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: .25rem;
+}
+
+move-list-element > .white > .move.white {
+  border: black 2px solid;
+  border-radius: 10px;
+  height: 50px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: .1rem;
+  font-size: 1rem;
+  color: #000;
+  background: #fff;
+  font-family: "Roboto Light", sans-serif;
+  font-weight: 900;
+}
+
+move-list-element > .black {
+  height: calc(100% - 50px);
+  overflow-y: scroll;
+  display: block;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: .25rem;
+}
+
+move-list-element > .black > .move.black {
+  border: black 2px solid;
+  color: white;
+  border-radius: 10px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: .1rem;
+  font-size: 1rem;
+  background: #000;
+  font-family: "Roboto Light", sans-serif;
+  font-weight: 900;
+}
+
 
 
