@@ -28,10 +28,10 @@ class Game {
       this.popUp = new ColorPopUp();
       this.popUp.init(document.body);
       document.body.addEventListener('gameover', (e)=>{
-          console.log('akmckal');
           const gameoverPopUp = new GameOverPopUp(e.detail.winner);
           gameoverPopUp.init(document.body);
       });
+
       // document.body.dispatchEvent(blackWin);
   }
 

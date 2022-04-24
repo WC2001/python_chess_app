@@ -165,17 +165,17 @@ class King(Piece):
             res.append((x + 1, y))
         if valid_field(x - 1, y) and board[x - 1][y].color != self.color:
             res.append((x - 1, y))
-        if valid_field(x + 1, y + 1) and board[x + 1][y + 1].color != board[x][y].color:
+        if valid_field(x + 1, y + 1) and board[x + 1][y + 1].color != self.color:
             res.append((x + 1, y + 1))
-        if valid_field(x + 1, y - 1) and board[x + 1][y - 1].color != board[x][y].color:
+        if valid_field(x + 1, y - 1) and board[x + 1][y - 1].color != self.color:
             res.append((x + 1, y - 1))
-        if valid_field(x - 1, y - 1) and board[x - 1][y - 1].color != board[x][y].color:
+        if valid_field(x - 1, y - 1) and board[x - 1][y - 1].color != self.color:
             res.append((x - 1, y - 1))
-        if valid_field(x - 1, y + 1) and board[x - 1][y + 1].color != board[x][y].color:
+        if valid_field(x - 1, y + 1) and board[x - 1][y + 1].color != self.color:
             res.append((x - 1, y + 1))
-        if valid_field(x, y - 1) and board[x][y - 1].color != board[x][y].color:
+        if valid_field(x, y - 1) and board[x][y - 1].color != self.color:
             res.append((x, y - 1))
-        if valid_field(x, y + 1) and board[x][y + 1].color != board[x][y].color:
+        if valid_field(x, y + 1) and board[x][y + 1].color != self.color:
             res.append((x, y + 1))
         #CASTLE
         if (self.color == 'b' and (x, y) == (0, 4)) or (self.color == 'w' and (x, y) == (7, 4)):

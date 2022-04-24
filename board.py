@@ -53,7 +53,6 @@ class Board:
 
 
         self.board = B
-        self.turn = 0
         self.w_king_pos = (w_king["x"], w_king["y"])
         self.b_king_pos = (b_king["x"], w_king["y"])
 
@@ -63,6 +62,9 @@ class Board:
         while valid_field(x, y+i):
             if self.board[x][y+i].color == color:
                 break
+            if self.board[x][y + i].color != color and self.board[x][y + i].color != '' and \
+                    (self.board[x][y + i].piece != 'Q' and self.board[x][y + i].piece != 'R'):
+                break
             if self.board[x][y+i].color != color and self.board[x][y+i].color != '' and \
                     (self.board[x][y+i].piece == 'Q' or self.board[x][y+i].piece == 'R'):
                 return True
@@ -71,14 +73,44 @@ class Board:
         while valid_field(x, y-i):
             if self.board[x][y-i].color == color:
                 break
+            if self.board[x][y - i].color != color and self.board[x][y - i].color != '' and \
+                    (self.board[x][y - i].piece != 'Q' and self.board[x][y - i].piece != 'R'):
+                break
             if self.board[x][y-i].color != color and self.board[x][y-i].color != '' and \
                     (self.board[x][y-i].piece == 'Q' or self.board[x][y-i].piece == 'R'):
                 return True
             i += 1
 
         i = 1
+        while valid_field(x-i, y):
+            if self.board[x-i][y].color == color:
+                break
+            if self.board[x - i][y].color != color and self.board[x - i][y].color != '' and \
+                    (self.board[x-i][y].piece != 'Q' and self.board[x-i][y].piece != 'R'):
+                break
+            if self.board[x-i][y].color != color and self.board[x-i][y].color != '' and \
+                    (self.board[x-i][y].piece == 'Q' or self.board[x-i][y].piece == 'R'):
+                return True
+            i += 1
+
+        i = 1
+        while valid_field(x+i, y):
+            if self.board[x+i][y].color == color:
+                break
+            if self.board[x + i][y].color != color and self.board[x + i][y].color != '' and \
+                    (self.board[x+i][y].piece != 'Q' and self.board[x+i][y].piece != 'R'):
+                break
+            if self.board[x+i][y].color != color and self.board[x+i][y].color != '' and \
+                    (self.board[x+i][y].piece == 'Q' or self.board[x+i][y].piece == 'R'):
+                return True
+            i += 1
+
+        i = 1
         while valid_field(x-i, y-i):
             if self.board[x-i][y-i].color == color:
+                break
+            if self.board[x - i][y-i].color != color and self.board[x - i][y-i].color != '' and \
+                    (self.board[x-i][y-i].piece != 'Q' and self.board[x-i][y-i].piece != 'B'):
                 break
             if self.board[x-i][y-i].color != color and self.board[x-i][y-i].color != '' and \
                     (self.board[x-i][y-i].piece == 'Q' or self.board[x-i][y-i].piece == 'B'):
@@ -89,12 +121,18 @@ class Board:
             if self.board[x + i][y + i].color == color:
                 break
             if self.board[x + i][y + i].color != color and self.board[x + i][y + i].color != '' and \
+                    (self.board[x + i][y + i].piece != 'Q' or self.board[x + i][y + i].piece != 'B'):
+                break
+            if self.board[x + i][y + i].color != color and self.board[x + i][y + i].color != '' and \
                     (self.board[x + i][y + i].piece == 'Q' or self.board[x + i][y + i].piece == 'B'):
                 return True
             i += 1
         i = 1
         while valid_field(x + i, y - i):
             if self.board[x + i][y - i].color == color:
+                break
+            if self.board[x + i][y-i].color != color and self.board[x + i][y-i].color != '' and \
+                    (self.board[x+i][y-i].piece != 'Q' and self.board[x+i][y-i].piece != 'B'):
                 break
             if self.board[x + i][y - i].color != color and self.board[x + i][y - i].color != '' and \
                     (self.board[x + i][y - i].piece == 'Q' or self.board[x + i][y - i].piece == 'B'):
@@ -103,6 +141,9 @@ class Board:
         i = 1
         while valid_field(x - i, y + i):
             if self.board[x - i][y + i].color == color:
+                break
+            if self.board[x - i][y + i].color != color and self.board[x - i][y + i].color != '' and \
+                    (self.board[x - i][y + i].piece != 'Q' and self.board[x - i][y + i].piece != 'B'):
                 break
             if self.board[x - i][y + i].color != color and self.board[x - i][y + i].color != '' and \
                     (self.board[x - i][y + i].piece == 'Q' or self.board[x - i][y + i].piece == 'B'):
@@ -141,39 +182,40 @@ class Board:
         return False
 
     def list_possible_moves(self, x, y):
-        arr =  list(filter(lambda m: self.test_move(m, x, y), self.board[x][y].list_possible_moves(x, y, self.board)))
+        arr = list(filter(lambda m: self.test_move(m, x, y), self.board[x][y].list_possible_moves(x, y, self.board)))
         print("-----------------------")
         print(arr)
         return arr
 
     def test_move(self, move, x, y):
         old = self.board[x][y]
-        self.board[x][y] = Empty()
-        
-            # if field[1] == 'w' and self.in_check(self.w_king_pos[0], self.w_king_pos[1]):
-            #     self.board[x][y] = field
-            #     self.board[move[0]][move[1]] = target_field
-            #     moves = filter(lambda m: m[0] != move[0] and m[1] != move[1], moves)
-        self.board[move[0]][move[1]] = old
-        if old.color == 'w' and  self.in_check(self.w_king_pos[0], self.w_king_pos[1]):
-            self.board[x][y] = old
-            self.board[move[0]][move[1]] = Empty()
+        move_field = self.board[move[0]][move[1]]
+        if self.board[x][y].piece == 'K' and self.board[x][y].color == 'w':
+            self.w_king_pos = move
+        if self.board[x][y].piece == 'K' and self.board[x][y].color == 'b':
+            self.b_king_pos = move
 
+        self.board[x][y] = Empty()
+
+        self.board[move[0]][move[1]] = old
+
+        if old.color == 'w' and self.in_check(self.w_king_pos[0], self.w_king_pos[1]):
+            self.board[x][y] = old
+            self.board[move[0]][move[1]] = move_field
+            if old.piece == 'K':
+                self.w_king_pos = (x, y)
             return False
 
-        if old.color == 'b' and  self.in_check(self.b_king_pos[0], self.b_king_pos[1]):
+        if old.color == 'b' and self.in_check(self.b_king_pos[0], self.b_king_pos[1]):
             self.board[x][y] = old
-            self.board[move[0]][move[1]] = Empty()
+            self.board[move[0]][move[1]] = move_field
+            if old.piece == 'K':
+                self.b_king_pos = (x, y)
             return False
         
         self.board[x][y] = old
-        self.board[move[0]][move[1]] = Empty()
+        self.board[move[0]][move[1]] = move_field
         return True
-
-            # if field[1] == 'b' and self.in_check(self.b_king_pos[0], self.b_king_pos[1]):
-            #     self.board[x][y] = field
-            #     self.board[move[0]][move[1]] = target_field
-            #     moves = filter(lambda m: m[0] != move[0] and m[1] != move[1], moves)
 
     def can_move(self, color):
         for i in range(8):
@@ -188,7 +230,6 @@ class Board:
         color = self.board[x][y].color
         self.board[x1][y1] = self.board[x][y]
         self.board[x][y] = Empty()
-        self.turn += 1
         if color == 'w' and self.in_check(self.b_king_pos[0], self.b_king_pos[1]):
             print("Black king checked.")
             if not self.can_move('b'):
@@ -197,7 +238,4 @@ class Board:
             print("White king checked.")
             if not self.can_move('w'):
                 print("White king mated")
-
-
-# Board1 = Board()
 

@@ -15,7 +15,7 @@ export class ChessField extends HTMLElement {
         mountpoint.append(this);
         this.onclick = async () => {
             console.log(`${ this.piece } | ${ this.color } | ${ this.listenerMode } `);
-            if (this.piece != '' && this.listenerMode === 'initial' && this.color === query`chessboard-element`.color) {
+            if (this.piece !== '' && this.listenerMode === 'initial' /*&& this.color === query`chessboard-element`.color*/) {
                 queryAll`chessfield-element`.forEach((field)=> {
                     field.classList.remove('selected'); 
                     field.classList.remove('possible');
@@ -27,7 +27,8 @@ export class ChessField extends HTMLElement {
                 const response = await fetch("/moves", {
                     method: "POST",
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
                     },
                     body: JSON.stringify({
                         position: this.getPosition(), board: query`chessboard-element`.getBoard(),
