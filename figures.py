@@ -16,6 +16,17 @@ class Piece:
 class Empty(Piece):
     def __init__(self):
         super().__init__('', '')
+        self.value = 0
+        self.valueAdjustment = [
+            [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+        ]
 
     def list_possible_moves(self, x, y, board):
         return []
@@ -24,6 +35,16 @@ class Empty(Piece):
 class Rook(Piece):
     def __init__(self, color):
         super().__init__(color, 'R')
+        self.value = 50
+        self.valueAdjustment = [[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+                                [0.5, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.5],
+                                [-0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.5],
+                                [-0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.5],
+                                [-0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.5],
+                                [-0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.5],
+                                [-0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.5],
+                                [0.0, 0.0, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0]
+                                ]
 
     def list_possible_moves(self, x, y, board):
         res = []
@@ -53,6 +74,17 @@ class Rook(Piece):
 class Knight(Piece):
     def __init__(self, color):
         super().__init__(color, 'k')
+        self.value = 30
+        self.valueAdjustment = [
+            [-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0],
+            [-4.0, -2.0, 0.0, 0.0, 0.0, 0.0, -2.0, -4.0],
+            [-3.0, 0.0, 1.0, 1.5, 1.5, 1.0, 0.0, -3.0],
+            [-3.0, 0.5, 1.5, 2.0, 2.0, 1.5, 0.5, -3.0],
+            [-3.0, 0.0, 1.5, 2.0, 2.0, 1.5, 0.0, -3.0],
+            [-3.0, 0.5, 1.0, 1.5, 1.5, 1.0, 0.5, -3.0],
+            [-4.0, -2.0, 0.0, 0.5, 0.5, 0.0, -2.0, -4.0],
+            [-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0]
+        ]
 
     def list_possible_moves(self, x, y, board):
         res = []
@@ -78,6 +110,15 @@ class Knight(Piece):
 class Bishop(Piece):
     def __init__(self, color):
         super().__init__(color, 'B')
+        self.value = 32
+        self.valueAdjustment = [[-2, -1, -1, -1, -1, -1, -1, -2],
+                                [-1, 0, 0, 0, 0, 0, 0, -1],
+                                [-1, 0, 0.5, 1, 1, 0.5, 0, -1],
+                                [-1, 0.5, 0.5, 1, 1, 0.5, 0.5, -1],
+                                [-1, 0, 1, 1, 1, 1, 0, -1],
+                                [-1, 1, 1, 1, 1, 1, 1, -1],
+                                [-1, 0.5, 0, 0, 0, 0, 0.5, -1],
+                                [-2, -1, -1, -1, -1, -1, -1, -2]]
 
     def list_possible_moves(self, x, y, board):
         res = []
@@ -116,12 +157,23 @@ class Bishop(Piece):
 class Pawn(Piece):
     def __init__(self, color):
         super().__init__(color, 'P')
+        self.value = 10
         if self.color == 'b':
             self.step = 1
             self.start = 1
         elif self.color == 'w':
             self.step = -1
             self.start = 6
+        self.valueAdjustment = [
+            [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+            [5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0],
+            [1.0, 1.0, 2.0, 3.0, 3.0, 2.0, 1.0, 1.0],
+            [0.5, 0.5, 1.0, 2.5, 2.5, 1.0, 0.5, 0.5],
+            [0.0, 0.0, 0.0, 2.0, 2.0, 0.0, 0.0, 0.0],
+            [0.5, -0.5, -1.0, 0.0, 0.0, -1.0, -0.5, 0.5],
+            [0.5, 1.0, 1.0, -2.0, -2.0, 1.0, 1.0, 0.5],
+            [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+        ]
 
     def list_possible_moves(self, x, y, board):
         # TODO bicie w przelocie
@@ -137,19 +189,22 @@ class Pawn(Piece):
         if x == self.start and isinstance(board[x + self.step][y], Empty) and \
             isinstance(board[x + 2 * self.step][y], Empty):
             res.append((x + 2 * self.step, y))
-        #Bicie w przelocie (chyba)
-        # if valid_field(x + self.step, y + 1) and isinstance(self.board[x + self.step][y], Empty) and \
-        #         isinstance(self.board[x][y + 1], Pawn) and self.color != self.board[x][y + 1].color:
-        #     res.append((x + self.step, y + 1))
-        # if valid_field(x + self.step, y - 1) and isinstance(self.board[x + self.step][y], Empty) and \
-        #         isinstance(self.board[x][y - 1], Pawn) and self.board[x][y - 1].color != self.color:
-        #     res.append((x + self.step, y - 1))
+
         return res
 
 
 class Queen(Bishop, Rook):
     def __init__(self, color):
         Piece.__init__(self, color, 'Q')
+        self.value = 90
+        self.valueAdjustment = [[-2,  -1, -1, -0.5,-0.5, -1, -1, -2],
+                                [-1,   0, 0,   0,   0,   0,   0,  -1],
+                                [-1,   0, 0.5, 0.5, 0.5, 0.5, 0,  -1],
+                                [-0.5, 0, 0.5, 0.5, 0.5, 0.5, 0, -0.5],
+                                [ 0,  0,  0.5, 0.5, 0.5, 0.5, 0, -0.5],
+                                [-1, 0.5, 0.5, 0.5, 0.5, 0.5, 0,  -1],
+                                [-1,  0,  0.5, 0,    0,   0,  0, -1],
+                                [-2, -1, -1, -0.5, -0.5, -1, -1, -2]]
 
     def list_possible_moves(self, x, y, board):
         return Bishop.list_possible_moves(self, x, y, board) + Rook.list_possible_moves(self, x, y, board)
@@ -158,6 +213,17 @@ class Queen(Bishop, Rook):
 class King(Piece):
     def __init__(self, color):
         super().__init__(color, 'K')
+        self.value = 900
+        self.valueAdjustment = [
+            [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0],
+            [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0],
+            [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0],
+            [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0],
+            [-2.0, -3.0, -3.0, -4.0, -4.0, -3.0, -3.0, -2.0],
+            [-1.0, -2.0, -2.0, -2.0, -2.0, -2.0, -2.0, -1.0],
+            [2.0, 2.0, 0.0, 0.0, 0.0, 0.0, 2.0, 2.0],
+            [2.0, 3.0, 1.0, 0.0, 0.0, 1.0, 3.0, 2.0],
+        ]
 
     def list_possible_moves(self, x, y, board):
         res = []
