@@ -65,6 +65,15 @@ export class ChessBoard extends HTMLElement {
         this.board = board
     }
 
+    promotePawn(row, column, content){
+        let field = document.getElementById(row*8+column);
+        field.changeInnerHTML(content);
+        field.classList.add('selected');
+        this.board[row][column].piece = content.piece;
+        this.board[row][column].color = content.color;
+
+    }
+
 
     initialiseFigures(color){
         let res = [

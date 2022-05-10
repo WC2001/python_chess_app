@@ -64,7 +64,7 @@ chessfield-element > div {
   background: #dfe7bb !important;
 }
 
-color-pop-up-element, gameover-pop-up-element {
+color-pop-up-element, gameover-pop-up-element, promotion-pop-up-element {
   height: 100vh;
   width: 100vw;
   position: fixed;
@@ -77,6 +77,7 @@ color-pop-up-element, gameover-pop-up-element {
   flex-flow: row nowrap;
 }
 color-pop-up-element > .pop-up-container,
+promotion-pop-up-element > .promotion-pop-up-container,
 gameover-pop-up-element > .pop-up-container{
   background: rgba(243,243,243);
   width: 60%;
@@ -88,6 +89,7 @@ gameover-pop-up-element > .pop-up-container{
 }
 
 color-pop-up-element > .pop-up-container > *,
+promotion-pop-up-element > .promotion-pop-up-container > *,
 gameover-pop-up-element > .pop-up-container > *{
   flex: 1;
   display: flex;
@@ -99,7 +101,8 @@ gameover-pop-up-element > .pop-up-container > *{
   height: 100%;
 }
 
-color-pop-up-element > .pop-up-container > *:hover {
+color-pop-up-element > .pop-up-container > *:hover,
+promotion-pop-up-element > .promotion-pop-up-container > *:hover{
   background: rgba(160, 233, 193, 0.5);
   cursor: pointer;
 }
@@ -212,6 +215,7 @@ move-list-element > .black > .move.black {
   font-family: "Roboto Light", sans-serif;
   font-weight: 900;
 }
+
 
 
 

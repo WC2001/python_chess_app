@@ -13,7 +13,7 @@ class Game {
     this.start();
     if ( Game.instance ) throw new Error("Singleton classes can't be instantiated more than once.")
     document.body.addEventListener('gamestarted', ()=>{
-        this.#board = new ChessBoard(0, localStorage.getItem('color'));
+        this.#board = new ChessBoard(100, localStorage.getItem('color'));
         this.#moveList = new MoveList();
         this.#moveList.init(query`#container`);
         this.#moveList.update([...this.#moveList.whiteMoves],[...this.#moveList.blackMoves]);

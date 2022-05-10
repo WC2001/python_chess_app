@@ -1,5 +1,7 @@
 import {query, queryAll} from "./utils.js";
 import {ChessBoard} from "./board.js";
+import {PromotionPopUp} from "./promotionPopUp.js";
+import {pieceChosen} from "./events.js";
 
 export class ChessField extends HTMLElement {
     constructor(id, piece, color) {
@@ -57,10 +59,16 @@ export class ChessField extends HTMLElement {
             } else if (this.listenerMode === 'move' && this.classList.contains('selected')) {
                 ChessBoard.removeSelected()
             } else if (this.listenerMode === 'move' && this.classList.contains('possible')) {
-                const initial = query`.selected`.getPosition();
+                if (query`.selected`.piece === 'P' && ((this.id>=0 && this.id <=7) || (this.id>=56 && this.id<=63))){
+                    const position = query`.selected`.getPosition();
+                    this.promotionPopup = new PromotionPopUp(query`.selected`.color, position.x, position.y);
+                    this.promotionPopup.init(document.body);
+
+                    document.body.addEventListener('piecechosen', async () => {
+                    const initial = query`.selected`.getPosition();
                     const kings_positions = query`chessboard-element`.getKings();
                     const response = await fetch('/changePosition', {
-                        method:'POST',
+                        method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                             'Accept': 'application/json'
@@ -68,7 +76,7 @@ export class ChessField extends HTMLElement {
                         body: JSON.stringify({
                             board: query`chessboard-element`.getBoard(),
                             w_king: kings_positions.w_king, b_king: kings_positions.b_king,
-                            initial: {'x':initial.x,'y':initial.y} ,
+                            initial: {'x': initial.x, 'y': initial.y},
                             final: {'x': this.getPosition().x, 'y': this.getPosition().y}
                         })
                     })
@@ -78,8 +86,35 @@ export class ChessField extends HTMLElement {
                     console.log(newBoard);
                     this.listenerMode = "initial"
                     ChessBoard.rerender(newBoard);
-            }
+                })
+                }
+                else{
+                    const initial = query`.selected`.getPosition();
+                    const kings_positions = query`chessboard-element`.getKings();
+                    const response = await fetch('/changePosition', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            board: query`chessboard-element`.getBoard(),
+                            w_king: kings_positions.w_king, b_king: kings_positions.b_king,
+                            initial: {'x': initial.x, 'y': initial.y},
+                            final: {'x': this.getPosition().x, 'y': this.getPosition().y}
+                        })
+                    })
+                    // const data = JSON.parse(await response.json());
+                    const data = await response.json();
+                    const newBoard = ChessBoard.parseNewBoardFromServer(data);
+                    console.log(newBoard);
+                    this.listenerMode = "initial"
+                    ChessBoard.rerender(newBoard);
 
+                }
+
+
+            }
         }
 
 

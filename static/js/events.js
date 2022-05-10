@@ -13,3 +13,7 @@ export const blackWin = new CustomEvent('gameover', {
       winner: "black"
   }
 });
+
+export const pieceChosen = new CustomEvent('piecechosen', {
+    detail: {}
+});
