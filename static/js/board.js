@@ -8,6 +8,7 @@ export class ChessBoard extends HTMLElement {
         this.id = id;
         this.color = color;
         this.init();
+        this.intact = {w_king:1, w_short:1, w_long:1, b_king:1, b_short:1, b_long:1};
     }
 
     init(){
@@ -40,6 +41,10 @@ export class ChessBoard extends HTMLElement {
         }
         console.log(array.board)
         return array.board;
+    }
+
+    getIntact(){
+        return this.intact;
     }
 
     getKings(){

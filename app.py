@@ -1,4 +1,3 @@
-
 from flask import Flask, render_template, request, jsonify, send_from_directory
 
 from board import Board
@@ -19,10 +18,12 @@ def moves():
     inputboard = request.json['board']
     w_king = request.json['w_king']
     b_king = request.json['b_king']
+    intact = request.json['intact']
     # print(request.json['board'])
+    # print(request.json['intact'])
     # print(request.json['position'])
     # print(request.json['w_king'], request.json['b_king'])
-    board = Board(inputboard, w_king, b_king)
+    board = Board(inputboard, w_king, b_king, intact)
     return jsonify({"result": board.list_possible_moves(request.json['position']['x'], request.json['position']['y'])})
 
 
@@ -33,7 +34,9 @@ def change():
     b_king = request.json['b_king']
     initial = request.json['initial']
     final = request.json['final']
-    board = Board(inputboard, w_king, b_king)
+    intact = request.json['intact']
+    print(request.json['intact'])
+    board = Board(inputboard, w_king, b_king, intact)
     color = board.board[initial["x"]][initial["y"]].color
     board.move(initial["x"], initial["y"], final["x"], final["y"])
     if color == 'w':
@@ -45,8 +48,6 @@ def change():
     res = BoardEncoder.encode(boardEncoder, board)
 
     return jsonify({"result": res})
-
-
 
 
 @app.route("/static/<path:filename>")

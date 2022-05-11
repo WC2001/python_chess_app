@@ -23,6 +23,7 @@ export class ChessField extends HTMLElement {
                     field.classList.remove('possible');
                 })
                 const kings_positions = query`chessboard-element`.getKings();
+                const intact = query`chessboard-element`.getIntact();
                 this.classList.add('selected')
                 this.listenerMode = "move"
                 console.log(kings_positions);
@@ -34,7 +35,9 @@ export class ChessField extends HTMLElement {
                     },
                     body: JSON.stringify({
                         position: this.getPosition(), board: query`chessboard-element`.getBoard(),
-                        w_king: kings_positions.w_king, b_king: kings_positions.b_king
+                        w_king: kings_positions.w_king, b_king: kings_positions.b_king,
+                        intact: {'w_king': intact.w_king, 'w_short': intact.w_short, 'w_long': intact.w_long,
+                            'b_king': intact.b_king, 'b_short': intact.b_short, 'b_long': intact.b_long}
                     })
 
                 })
@@ -66,6 +69,7 @@ export class ChessField extends HTMLElement {
 
                     document.body.addEventListener('piecechosen', async () => {
                     const initial = query`.selected`.getPosition();
+                    const intact = query`chessboard-element`.getIntact();
                     const kings_positions = query`chessboard-element`.getKings();
                     const response = await fetch('/changePosition', {
                         method: 'POST',
@@ -77,7 +81,10 @@ export class ChessField extends HTMLElement {
                             board: query`chessboard-element`.getBoard(),
                             w_king: kings_positions.w_king, b_king: kings_positions.b_king,
                             initial: {'x': initial.x, 'y': initial.y},
-                            final: {'x': this.getPosition().x, 'y': this.getPosition().y}
+                            final: {'x': this.getPosition().x, 'y': this.getPosition().y},
+                            intact: {'w_king': intact.w_king, 'w_short': intact.w_short, 'w_long': intact.w_long,
+                            'b_king': intact.b_king, 'b_short': intact.b_short, 'b_long': intact.b_long}
+
                         })
                     })
                     // const data = JSON.parse(await response.json());
@@ -91,6 +98,7 @@ export class ChessField extends HTMLElement {
                 else{
                     const initial = query`.selected`.getPosition();
                     const kings_positions = query`chessboard-element`.getKings();
+                    const intact = query`chessboard-element`.getIntact();
                     const response = await fetch('/changePosition', {
                         method: 'POST',
                         headers: {
@@ -101,7 +109,9 @@ export class ChessField extends HTMLElement {
                             board: query`chessboard-element`.getBoard(),
                             w_king: kings_positions.w_king, b_king: kings_positions.b_king,
                             initial: {'x': initial.x, 'y': initial.y},
-                            final: {'x': this.getPosition().x, 'y': this.getPosition().y}
+                            final: {'x': this.getPosition().x, 'y': this.getPosition().y},
+                            intact: {'w_king': intact.w_king, 'w_short': intact.w_short, 'w_long': intact.w_long,
+                            'b_king': intact.b_king, 'b_short': intact.b_short, 'b_long': intact.b_long}
                         })
                     })
                     // const data = JSON.parse(await response.json());

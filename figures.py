@@ -46,7 +46,8 @@ class Rook(Piece):
                                 [0.0, 0.0, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0]
                                 ]
 
-    def list_possible_moves(self, x, y, board):
+    def list_possible_moves(self, x, y, chessboard):
+        board = chessboard.board
         res = []
         for i in range(x + 1, 8):
             if board[i][y].color != self.color:
@@ -86,7 +87,8 @@ class Knight(Piece):
             [-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0]
         ]
 
-    def list_possible_moves(self, x, y, board):
+    def list_possible_moves(self, x, y, chessboard):
+        board = chessboard.board
         res = []
         if valid_field(x - 1, y - 2) and board[x - 1][y - 2].color != self.color:
             res.append((x - 1, y - 2))
@@ -120,7 +122,8 @@ class Bishop(Piece):
                                 [-1, 0.5, 0, 0, 0, 0, 0.5, -1],
                                 [-2, -1, -1, -1, -1, -1, -1, -2]]
 
-    def list_possible_moves(self, x, y, board):
+    def list_possible_moves(self, x, y, chessboard):
+        board = chessboard.board
         res = []
         i = 1
         while valid_field(x + i, y + i):
@@ -175,7 +178,8 @@ class Pawn(Piece):
             [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
         ]
 
-    def list_possible_moves(self, x, y, board):
+    def list_possible_moves(self, x, y, chessboard):
+        board = chessboard.board
         # TODO bicie w przelocie
         res = []
         if valid_field(x + self.step, y) and isinstance(board[x + self.step][y], Empty):
@@ -225,7 +229,8 @@ class King(Piece):
             [2.0, 3.0, 1.0, 0.0, 0.0, 1.0, 3.0, 2.0],
         ]
 
-    def list_possible_moves(self, x, y, board):
+    def list_possible_moves(self, x, y, chessboard):
+        board = chessboard.board
         res = []
         if valid_field(x + 1, y) and board[x + 1][y].color != self.color:
             res.append((x + 1, y))
@@ -244,10 +249,15 @@ class King(Piece):
         if valid_field(x, y + 1) and board[x][y + 1].color != self.color:
             res.append((x, y + 1))
         #CASTLE
-        # if (self.color == 'b' and (x, y) == (0, 4)) or (self.color == 'w' and (x, y) == (7, 4)):
-        #     if isinstance(board[x][y + 1], Empty) and isinstance(board[x][y + 2], Empty) and \
-        #             isinstance(board[x][y + 3], Rook):
-        #         res.append((x, y + 3))
+        if self.color == 'w' and chessboard.w_king_intact and chessboard.w_short and isinstance(board[x][y+1], Empty) and \
+                isinstance(board[x][y+2], Empty):
+            if chessboard.test_move((x, y+1), x, y) and chessboard.test_move((x, y+2), x, y+1):
+                res.append((x, y+2))
+
+        if self.color == 'w' and chessboard.w_king_intact and chessboard.w_long and isinstance(board[x][y - 1], Empty) and \
+                isinstance(board[x][y - 2], Empty) and isinstance(board[x][y - 3], Empty):
+            if chessboard.test_move((x, y - 1), x, y) and chessboard.test_move((x, y - 2), x, y-1):
+                res.append((x, y - 2))
 
         return res
 
