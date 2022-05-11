@@ -244,10 +244,10 @@ class King(Piece):
         if valid_field(x, y + 1) and board[x][y + 1].color != self.color:
             res.append((x, y + 1))
         #CASTLE
-        if (self.color == 'b' and (x, y) == (0, 4)) or (self.color == 'w' and (x, y) == (7, 4)):
-            if isinstance(board[x][y + 1], Empty) and isinstance(board[x][y + 2], Empty) and \
-                    isinstance(board[x][y + 3], Rook):
-                res.append((x, y + 3))
+        # if (self.color == 'b' and (x, y) == (0, 4)) or (self.color == 'w' and (x, y) == (7, 4)):
+        #     if isinstance(board[x][y + 1], Empty) and isinstance(board[x][y + 2], Empty) and \
+        #             isinstance(board[x][y + 3], Rook):
+        #         res.append((x, y + 3))
 
         return res
 

@@ -58,6 +58,10 @@ class Board:
 
     def in_check(self, x, y):
         color = self.board[x][y].color
+        # for i in range(8):
+        #     for j in range(8):
+        #         if self.board[i][j].color != color and (x, y) in self.board[i][j].list_possible_moves(i, j, self.board):
+        #             return True
         i = 1
         while valid_field(x, y+i):
             if self.board[x][y+i].color == color:
@@ -170,11 +174,11 @@ class Board:
         if color == 'w':
             if valid_field(x - 1, y - 1) and self.board[x - 1][y - 1].color == 'b' and self.board[x - 1][y - 1].piece == 'P':
                 return True
-            if valid_field(x + 1, y - 1) and self.board[x + 1][y - 1].color == 'b' and self.board[x + 1][y - 1].piece == 'P':
+            if valid_field(x - 1, y + 1) and self.board[x - 1][y + 1].color == 'b' and self.board[x - 1][y + 1].piece == 'P':
                 return True
 
         if color == 'b':
-            if valid_field(x-1, y+1) and self.board[x-1][y+1].color == 'w' and self.board[x-1][y+1].piece == 'P':
+            if valid_field(x + 1, y - 1) and self.board[x + 1][y - 1].color == 'w' and self.board[x+1][y-1].piece == 'P':
                 return True
             if valid_field(x + 1, y + 1) and self.board[x + 1][y + 1].color == 'w' and self.board[x + 1][y + 1].piece == 'P':
                 return True
@@ -183,8 +187,8 @@ class Board:
 
     def list_possible_moves(self, x, y):
         arr = list(filter(lambda m: self.test_move(m, x, y), self.board[x][y].list_possible_moves(x, y, self.board)))
-        print("-----------------------")
-        print(arr)
+        # print("-----------------------")
+        # print(arr)
         return arr
 
     def test_move(self, move, x, y):
@@ -228,6 +232,9 @@ class Board:
 
     def move(self, x, y, x1, y1):
         color = self.board[x][y].color
+        # if isinstance(self.board[x][y], King):
+        #     self.setKingPosition(color, x1, y1)
+        # self.board[x1][y1], self.board[x][y] = self.board[x][y], self.board[x1][y1]
         self.board[x1][y1] = self.board[x][y]
         self.board[x][y] = Empty()
         if color == 'w' and self.in_check(self.b_king_pos[0], self.b_king_pos[1]):
@@ -239,3 +246,13 @@ class Board:
             if not self.can_move('w'):
                 print("White king mated")
 
+    def unmove(self, x1, y1, x, y, figure):
+        if isinstance(self.board[x1][y1], King):
+            self.setKingPosition(self.board[x1][y1].color, x, y)
+        self.board[x1][y1], self.board[x][y] = figure, self.board[x1][y1]
+
+    def setKingPosition(self, color, x, y):
+        if color == 'w':
+            self.w_king_pos = (x, y)
+        else:
+            self.b_king_pos = (x, y)

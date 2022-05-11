@@ -1,7 +1,9 @@
-from flask import Flask, render_template, request, jsonify, send_from_directory
-from boardEncoder import BoardEncoder
-from board import Board
 
+from flask import Flask, render_template, request, jsonify, send_from_directory
+
+from board import Board
+from boardEncoder import BoardEncoder
+from evaluation import alphaBetaMax, alphaBetaMin, evaluate
 app = Flask(__name__)
 
 
@@ -32,7 +34,13 @@ def change():
     initial = request.json['initial']
     final = request.json['final']
     board = Board(inputboard, w_king, b_king)
+    color = board.board[initial["x"]][initial["y"]].color
     board.move(initial["x"], initial["y"], final["x"], final["y"])
+    if color == 'w':
+        score, bestmove, startmove = alphaBetaMin(-1000, 1000, board, "b", 4)
+    else:
+        score, bestmove, startmove = alphaBetaMax(-1000, 1000, board, "w", 4)
+    board.move(startmove[0], startmove[1], bestmove[0], bestmove[1])
     boardEncoder = BoardEncoder()
     res = BoardEncoder.encode(boardEncoder, board)
 
