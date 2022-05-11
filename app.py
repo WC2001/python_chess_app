@@ -19,11 +19,13 @@ def moves():
     w_king = request.json['w_king']
     b_king = request.json['b_king']
     intact = request.json['intact']
+    player = request.json['player']
+    enpassant = request.json['en_passant']
     # print(request.json['board'])
     # print(request.json['intact'])
     # print(request.json['position'])
     # print(request.json['w_king'], request.json['b_king'])
-    board = Board(inputboard, w_king, b_king, intact)
+    board = Board(inputboard, w_king, b_king, intact, player, enpassant)
     return jsonify({"result": board.list_possible_moves(request.json['position']['x'], request.json['position']['y'])})
 
 
@@ -35,15 +37,17 @@ def change():
     initial = request.json['initial']
     final = request.json['final']
     intact = request.json['intact']
-    print(request.json['intact'])
-    board = Board(inputboard, w_king, b_king, intact)
+    player = request.json['player']
+    enpassant = request.json['en_passant']
+
+    board = Board(inputboard, w_king, b_king, intact, player, enpassant)
     color = board.board[initial["x"]][initial["y"]].color
     board.move(initial["x"], initial["y"], final["x"], final["y"])
-    if color == 'w':
-        score, bestmove, startmove = alphaBetaMin(-1000, 1000, board, "b", 4)
-    else:
-        score, bestmove, startmove = alphaBetaMax(-1000, 1000, board, "w", 4)
-    board.move(startmove[0], startmove[1], bestmove[0], bestmove[1])
+    # if color == 'w':
+    #     score, bestmove, startmove = alphaBetaMin(-1000, 1000, board, "b", 4)
+    # else:
+    #     score, bestmove, startmove = alphaBetaMax(-1000, 1000, board, "w", 4)
+    # board.move(startmove[0], startmove[1], bestmove[0], bestmove[1])
     boardEncoder = BoardEncoder()
     res = BoardEncoder.encode(boardEncoder, board)
 

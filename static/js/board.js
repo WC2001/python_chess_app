@@ -9,6 +9,7 @@ export class ChessBoard extends HTMLElement {
         this.color = color;
         this.init();
         this.intact = {w_king:1, w_short:1, w_long:1, b_king:1, b_short:1, b_long:1};
+        this.en_passant = [-1, -1]
     }
 
     init(){
@@ -34,7 +35,9 @@ export class ChessBoard extends HTMLElement {
     static parseNewBoardFromServer(response){
         let array = JSON.parse(response.result);
         console.log(array.board)
-        // const newArray = Object.keys(array).map((key)=> JSON.parse(array[key]))
+        console.log(array.en_passant);
+        this.intact = JSON.parse(array.intact);
+        console.log(this.intact);
         for (let i=0;i<8;i++){
             for(let j=0;j<8;j++)
                 array.board[i][j] = JSON.parse(array.board[i][j])
@@ -64,6 +67,10 @@ export class ChessBoard extends HTMLElement {
 
     getBoard(){
         return this.board;
+    }
+
+    getEnPassant(){
+        return this.en_passant;
     }
 
     setBoard(board) {

@@ -9,7 +9,7 @@ def valid_field(i, j):
 
 class Board:
 
-    def __init__(self, board, w_king, b_king, intact):
+    def __init__(self, board, w_king, b_king, intact, player, en_passant):
         B = [[] for _ in range(8)]
         for i in range(64):
             if board[i // 8][i % 8]["piece"] == "K":
@@ -44,9 +44,9 @@ class Board:
 
             if board[i // 8][i % 8]["piece"] == "P":
                 if board[i // 8][i % 8]["color"] == "w":
-                    B[i // 8].append(Pawn("w"))
+                    B[i // 8].append(Pawn("w", player))
                 else:
-                    B[i // 8].append(Pawn("b"))
+                    B[i // 8].append(Pawn("b", player))
 
             if board[i // 8][i % 8]["piece"] == "":
                 B[i // 8].append(Empty())
@@ -60,6 +60,9 @@ class Board:
         self.b_long = intact["b_long"]
         self.w_king_intact = intact["w_king"]
         self.b_king_intact = intact["b_king"]
+        self.player = player
+        self.en_passant = [-1, -1]
+        self.return_en_passant = en_passant
 
     def in_check(self, x, y):
         color = self.board[x][y].color
@@ -252,6 +255,34 @@ class Board:
         # if isinstance(self.board[x][y], King):
         #     self.setKingPosition(color, x1, y1)
         # self.board[x1][y1], self.board[x][y] = self.board[x][y], self.board[x1][y1]
+
+        if color == self.player:
+
+            self.en_passant = [-1, -1]
+            if x == 6 and x1 == 4 and self.board[x][y].piece == 'P':
+                self.en_passant[0] = 5
+                self.en_passant[1] = y
+            if x == 1 and x1 == 3 and self.board[x][y].piece == 'P':
+                self.en_passant[0] = 2
+                self.en_passant[1] = y
+
+            print(self.en_passant)
+
+        if color != self.player:
+
+            self.return_en_passant = [-1, -1]
+            if x == 6 and x1 == 4 and self.board[x][y].piece == 'P':
+                self.return_en_passant[0] = 5
+                self.return_en_passant[1] = y
+            if x == 1 and x1 == 3 and self.board[x][y].piece == 'P':
+                self.return_en_passant[0] = 2
+                self.return_en_passant[1] = y
+
+            print(self.return_en_passant)
+
+
+
+
         if self.board[x][y].piece == 'K' and y1 == y + 2:
             self.move(x, y+3, x, y+1)
             if self.board[x][y].color == 'w':
@@ -268,6 +299,36 @@ class Board:
             if self.board[x][y].color == 'b':
                 self.b_short = 0
                 self.b_king_intact = 0
+        if self.board[x][y].piece == 'K':
+            if self.board[x][y].color == 'w':
+                self.w_king_intact = 0
+            else:
+                self.b_king_intact = 0
+
+        if self.board[x][y].piece == 'R' and self.player == 'w':
+
+            if y == 0:
+                if self.board[x][y].color == 'b':
+                    self.b_long = 0
+                if self.board[x][y].color == 'w':
+                    self.w_long = 0
+            if y == 7:
+                if self.board[x][y].color == 'b':
+                    self.b_short = 0
+                if self.board[x][y].color == 'w':
+                    self.w_short = 0
+
+        if self.board[x][y].piece == 'R' and self.player == 'b':
+            if y == 0:
+                if self.board[x][y].color == 'b':
+                    self.b_short = 0
+                if self.board[x][y].color == 'w':
+                    self.w_short = 0
+            if y == 7:
+                if self.board[x][y].color == 'b':
+                    self.b_long = 0
+                if self.board[x][y].color == 'w':
+                    self.w_long = 0
 
         self.board[x1][y1] = self.board[x][y]
         self.board[x][y] = Empty()
@@ -290,3 +351,4 @@ class Board:
             self.w_king_pos = (x, y)
         else:
             self.b_king_pos = (x, y)
+

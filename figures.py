@@ -158,15 +158,25 @@ class Bishop(Piece):
 
 
 class Pawn(Piece):
-    def __init__(self, color):
+    def __init__(self, color, player):
         super().__init__(color, 'P')
         self.value = 10
-        if self.color == 'b':
-            self.step = 1
-            self.start = 1
-        elif self.color == 'w':
-            self.step = -1
-            self.start = 6
+        self.player = player
+        if self.player == 'w':
+            if self.color == 'w':
+                self.start = 6
+                self.step = -1
+            else:
+                self.start = 1
+                self.step = 1
+        else:
+            if self.color == 'w':
+                self.step = 1
+                self.start = 1
+            else:
+                self.start = 6
+                self.step = -1
+
         self.valueAdjustment = [
             [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
             [5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0],
@@ -189,6 +199,18 @@ class Pawn(Piece):
             res.append((x + self.step, y - 1))
         if valid_field(x + self.step, y + 1) and not isinstance(board[x + self.step][y + 1], Empty) and \
                 board[x + self.step][y + 1].color != self.color:
+            res.append((x + self.step, y + 1))
+        if valid_field(x + self.step, y - 1) and chessboard.en_passant[0] == x + self.step and \
+                chessboard.en_passant[1] == y - 1 and chessboard.player != self.color:
+            res.append((x + self.step, y - 1))
+        if valid_field(x + self.step, y + 1) and chessboard.en_passant[0] == x + self.step and \
+                chessboard.en_passant[1] == y + 1 and chessboard.player != self.color:
+            res.append((x + self.step, y + 1))
+        if valid_field(x + self.step, y - 1) and chessboard.return_en_passant[0] == x + self.step and \
+                chessboard.return_en_passant[1] == y - 1 and chessboard.player == self.color:
+            res.append((x + self.step, y - 1))
+        if valid_field(x + self.step, y + 1) and chessboard.return_en_passant[0] == x + self.step and \
+                chessboard.return_en_passant[1] == y + 1 and chessboard.player == self.color:
             res.append((x + self.step, y + 1))
         if x == self.start and isinstance(board[x + self.step][y], Empty) and \
             isinstance(board[x + 2 * self.step][y], Empty):
