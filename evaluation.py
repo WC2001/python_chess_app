@@ -28,7 +28,9 @@ def alphaBetaMax(alpha, beta, chessBoard, color, depth):
         if chessBoard.board[i//8][i % 8].color != color:
             pass
         else:
-            for move in chessBoard.list_possible_moves(i//8, i % 8):
+            moves = chessBoard.list_possible_moves(i//8, i % 8)
+            moves = moveOrdering(moves, chessBoard.board, i//8, i%8)
+            for move in moves:
                 figureCaptured = chessBoard.board[move[0]][move[1]]
                 # chessBoard.move(i // 8, i % 8, move[0], move[1])
                 figureMoved = chessBoard.board[i // 8][i % 8]
@@ -69,7 +71,9 @@ def alphaBetaMin(alpha, beta, chessBoard, color, depth):
         if chessBoard.board[i//8][i%8].color != color:
             pass
         else:
-            for move in chessBoard.list_possible_moves(i//8, i % 8):
+            moves = chessBoard.list_possible_moves(i // 8, i % 8)
+            moves = moveOrdering(moves, chessBoard.board, i // 8, i % 8)
+            for move in moves:
                 # chessBoard.move(i//8, i % 8, move[0], move[1])
                 figureCaptured = chessBoard.board[move[0]][move[1]]
                 figureMoved = chessBoard.board[i // 8][i % 8]
@@ -93,6 +97,18 @@ def alphaBetaMin(alpha, beta, chessBoard, color, depth):
                 if beta <= alpha:
                     break
     return minval, bestmove, beststart
+
+
+def moveOrdering(moves, board, x, y):
+    def moveScore(move1):
+        attackerValue = board[x][y].value
+        target1Value = board[move1[0]][move1[1]].value
+        return (10 * target1Value - attackerValue)
+    return sorted(moves, key=moveScore, reverse=True)
+
+
+
+
 
 # if __name__ == "__main__":
 #

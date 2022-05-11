@@ -1,3 +1,4 @@
+import time
 
 from flask import Flask, render_template, request, jsonify, send_from_directory
 
@@ -36,10 +37,12 @@ def change():
     board = Board(inputboard, w_king, b_king)
     color = board.board[initial["x"]][initial["y"]].color
     board.move(initial["x"], initial["y"], final["x"], final["y"])
+    starttime = time.time()
     if color == 'w':
         score, bestmove, startmove = alphaBetaMin(-1000, 1000, board, "b", 4)
     else:
         score, bestmove, startmove = alphaBetaMax(-1000, 1000, board, "w", 4)
+    print(time.time() - starttime)
     board.move(startmove[0], startmove[1], bestmove[0], bestmove[1])
     boardEncoder = BoardEncoder()
     res = BoardEncoder.encode(boardEncoder, board)

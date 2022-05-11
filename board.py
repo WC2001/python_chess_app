@@ -256,3 +256,11 @@ class Board:
             self.w_king_pos = (x, y)
         else:
             self.b_king_pos = (x, y)
+
+    def getAllMoves(self):
+        allMoves = []
+        for x in range(8):
+            for y in range(8):
+                for move in self.list_possible_moves(x, y):
+                    allMoves.append(((x, y), move))
+        return allMoves
