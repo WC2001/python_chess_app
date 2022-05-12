@@ -266,8 +266,6 @@ class Board:
                 self.en_passant[0] = 2
                 self.en_passant[1] = y
 
-            print(self.en_passant)
-
         if color != self.player:
 
             self.return_en_passant = [-1, -1]
@@ -277,11 +275,6 @@ class Board:
             if x == 1 and x1 == 3 and self.board[x][y].piece == 'P':
                 self.return_en_passant[0] = 2
                 self.return_en_passant[1] = y
-
-            print(self.return_en_passant)
-
-
-
 
         if self.board[x][y].piece == 'K' and y1 == y + 2:
             self.move(x, y+3, x, y+1)
@@ -329,6 +322,13 @@ class Board:
                     self.b_long = 0
                 if self.board[x][y].color == 'w':
                     self.w_long = 0
+
+        if self.player == self.board[x][y].color and self.board[x][y].piece == 'P' and \
+                x1 == self.return_en_passant[0] and y1 == self.return_en_passant[1]:
+            self.board[x][y1] = Empty()
+        if self.player != self.board[x][y].color and self.board[x][y].piece == 'P' and \
+                x1 == self.en_passant[0] and y1 == self.en_passant[1]:
+            self.board[x][y1] = Empty()
 
         self.board[x1][y1] = self.board[x][y]
         self.board[x][y] = Empty()
