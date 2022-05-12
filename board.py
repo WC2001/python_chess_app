@@ -58,130 +58,130 @@ class Board:
 
     def in_check(self, x, y):
         color = self.board[x][y].color
-        # for i in range(8):
-        #     for j in range(8):
-        #         if self.board[i][j].color != color and (x, y) in self.board[i][j].list_possible_moves(i, j, self.board):
-        #             return True
-        i = 1
-        while valid_field(x, y+i):
-            if self.board[x][y+i].color == color:
-                break
-            if self.board[x][y + i].color != color and self.board[x][y + i].color != '' and \
-                    (self.board[x][y + i].piece != 'Q' and self.board[x][y + i].piece != 'R'):
-                break
-            if self.board[x][y+i].color != color and self.board[x][y+i].color != '' and \
-                    (self.board[x][y+i].piece == 'Q' or self.board[x][y+i].piece == 'R'):
-                return True
-            i += 1
-        i = 1
-        while valid_field(x, y-i):
-            if self.board[x][y-i].color == color:
-                break
-            if self.board[x][y - i].color != color and self.board[x][y - i].color != '' and \
-                    (self.board[x][y - i].piece != 'Q' and self.board[x][y - i].piece != 'R'):
-                break
-            if self.board[x][y-i].color != color and self.board[x][y-i].color != '' and \
-                    (self.board[x][y-i].piece == 'Q' or self.board[x][y-i].piece == 'R'):
-                return True
-            i += 1
-
-        i = 1
-        while valid_field(x-i, y):
-            if self.board[x-i][y].color == color:
-                break
-            if self.board[x - i][y].color != color and self.board[x - i][y].color != '' and \
-                    (self.board[x-i][y].piece != 'Q' and self.board[x-i][y].piece != 'R'):
-                break
-            if self.board[x-i][y].color != color and self.board[x-i][y].color != '' and \
-                    (self.board[x-i][y].piece == 'Q' or self.board[x-i][y].piece == 'R'):
-                return True
-            i += 1
-
-        i = 1
-        while valid_field(x+i, y):
-            if self.board[x+i][y].color == color:
-                break
-            if self.board[x + i][y].color != color and self.board[x + i][y].color != '' and \
-                    (self.board[x+i][y].piece != 'Q' and self.board[x+i][y].piece != 'R'):
-                break
-            if self.board[x+i][y].color != color and self.board[x+i][y].color != '' and \
-                    (self.board[x+i][y].piece == 'Q' or self.board[x+i][y].piece == 'R'):
-                return True
-            i += 1
-
-        i = 1
-        while valid_field(x-i, y-i):
-            if self.board[x-i][y-i].color == color:
-                break
-            if self.board[x - i][y-i].color != color and self.board[x - i][y-i].color != '' and \
-                    (self.board[x-i][y-i].piece != 'Q' and self.board[x-i][y-i].piece != 'B'):
-                break
-            if self.board[x-i][y-i].color != color and self.board[x-i][y-i].color != '' and \
-                    (self.board[x-i][y-i].piece == 'Q' or self.board[x-i][y-i].piece == 'B'):
-                return True
-            i += 1
-        i = 1
-        while valid_field(x + i, y + i):
-            if self.board[x + i][y + i].color == color:
-                break
-            if self.board[x + i][y + i].color != color and self.board[x + i][y + i].color != '' and \
-                    (self.board[x + i][y + i].piece != 'Q' or self.board[x + i][y + i].piece != 'B'):
-                break
-            if self.board[x + i][y + i].color != color and self.board[x + i][y + i].color != '' and \
-                    (self.board[x + i][y + i].piece == 'Q' or self.board[x + i][y + i].piece == 'B'):
-                return True
-            i += 1
-        i = 1
-        while valid_field(x + i, y - i):
-            if self.board[x + i][y - i].color == color:
-                break
-            if self.board[x + i][y-i].color != color and self.board[x + i][y-i].color != '' and \
-                    (self.board[x+i][y-i].piece != 'Q' and self.board[x+i][y-i].piece != 'B'):
-                break
-            if self.board[x + i][y - i].color != color and self.board[x + i][y - i].color != '' and \
-                    (self.board[x + i][y - i].piece == 'Q' or self.board[x + i][y - i].piece == 'B'):
-                return True
-            i += 1
-        i = 1
-        while valid_field(x - i, y + i):
-            if self.board[x - i][y + i].color == color:
-                break
-            if self.board[x - i][y + i].color != color and self.board[x - i][y + i].color != '' and \
-                    (self.board[x - i][y + i].piece != 'Q' and self.board[x - i][y + i].piece != 'B'):
-                break
-            if self.board[x - i][y + i].color != color and self.board[x - i][y + i].color != '' and \
-                    (self.board[x - i][y + i].piece == 'Q' or self.board[x - i][y + i].piece == 'B'):
-                return True
-            i += 1
-
-        if valid_field(x - 1, y - 2) and self.board[x - 1][y - 2].color != color and self.board[x - 1][y - 2].piece == 'k':
-            return True
-        if valid_field(x - 2, y - 1) and self.board[x - 2][y - 1].color != color and self.board[x - 2][y - 1].piece == 'k':
-            return True
-        if valid_field(x - 2, y + 1) and self.board[x - 2][y + 1].color != color and self.board[x - 2][y + 1].piece == 'k':
-            return True
-        if valid_field(x - 1, y + 2) and self.board[x - 1][y + 2].color != color and self.board[x - 1][y + 2].piece == 'k':
-            return True
-        if valid_field(x + 1, y + 2) and self.board[x + 1][y + 2].color != color and self.board[x + 1][y + 2].piece == 'k':
-            return True
-        if valid_field(x + 2, y + 1) and self.board[x + 2][y + 1].color != color and self.board[x + 2][y + 1].piece == 'k':
-            return True
-        if valid_field(x + 2, y - 1) and self.board[x + 2][y - 1].color != color and self.board[x + 2][y - 1].piece == 'k':
-            return True
-        if valid_field(x + 1, y - 2) and self.board[x + 1][y - 2].color != color and self.board[x + 1][y - 2].piece == 'k':
-            return True
-
-        if color == 'w':
-            if valid_field(x - 1, y - 1) and self.board[x - 1][y - 1].color == 'b' and self.board[x - 1][y - 1].piece == 'P':
-                return True
-            if valid_field(x - 1, y + 1) and self.board[x - 1][y + 1].color == 'b' and self.board[x - 1][y + 1].piece == 'P':
-                return True
-
-        if color == 'b':
-            if valid_field(x + 1, y - 1) and self.board[x + 1][y - 1].color == 'w' and self.board[x+1][y-1].piece == 'P':
-                return True
-            if valid_field(x + 1, y + 1) and self.board[x + 1][y + 1].color == 'w' and self.board[x + 1][y + 1].piece == 'P':
-                return True
+        for i in range(8):
+            for j in range(8):
+                if self.board[i][j].color != color and (x, y) in self.board[i][j].list_possible_moves(i, j, self.board):
+                    return True
+        # i = 1
+        # while valid_field(x, y+i):
+        #     if self.board[x][y+i].color == color:
+        #         break
+        #     if self.board[x][y + i].color != color and self.board[x][y + i].color != '' and \
+        #             (self.board[x][y + i].piece != 'Q' and self.board[x][y + i].piece != 'R'):
+        #         break
+        #     if self.board[x][y+i].color != color and self.board[x][y+i].color != '' and \
+        #             (self.board[x][y+i].piece == 'Q' or self.board[x][y+i].piece == 'R'):
+        #         return True
+        #     i += 1
+        # i = 1
+        # while valid_field(x, y-i):
+        #     if self.board[x][y-i].color == color:
+        #         break
+        #     if self.board[x][y - i].color != color and self.board[x][y - i].color != '' and \
+        #             (self.board[x][y - i].piece != 'Q' and self.board[x][y - i].piece != 'R'):
+        #         break
+        #     if self.board[x][y-i].color != color and self.board[x][y-i].color != '' and \
+        #             (self.board[x][y-i].piece == 'Q' or self.board[x][y-i].piece == 'R'):
+        #         return True
+        #     i += 1
+        #
+        # i = 1
+        # while valid_field(x-i, y):
+        #     if self.board[x-i][y].color == color:
+        #         break
+        #     if self.board[x - i][y].color != color and self.board[x - i][y].color != '' and \
+        #             (self.board[x-i][y].piece != 'Q' and self.board[x-i][y].piece != 'R'):
+        #         break
+        #     if self.board[x-i][y].color != color and self.board[x-i][y].color != '' and \
+        #             (self.board[x-i][y].piece == 'Q' or self.board[x-i][y].piece == 'R'):
+        #         return True
+        #     i += 1
+        #
+        # i = 1
+        # while valid_field(x+i, y):
+        #     if self.board[x+i][y].color == color:
+        #         break
+        #     if self.board[x + i][y].color != color and self.board[x + i][y].color != '' and \
+        #             (self.board[x+i][y].piece != 'Q' and self.board[x+i][y].piece != 'R'):
+        #         break
+        #     if self.board[x+i][y].color != color and self.board[x+i][y].color != '' and \
+        #             (self.board[x+i][y].piece == 'Q' or self.board[x+i][y].piece == 'R'):
+        #         return True
+        #     i += 1
+        #
+        # i = 1
+        # while valid_field(x-i, y-i):
+        #     if self.board[x-i][y-i].color == color:
+        #         break
+        #     if self.board[x - i][y-i].color != color and self.board[x - i][y-i].color != '' and \
+        #             (self.board[x-i][y-i].piece != 'Q' and self.board[x-i][y-i].piece != 'B'):
+        #         break
+        #     if self.board[x-i][y-i].color != color and self.board[x-i][y-i].color != '' and \
+        #             (self.board[x-i][y-i].piece == 'Q' or self.board[x-i][y-i].piece == 'B'):
+        #         return True
+        #     i += 1
+        # i = 1
+        # while valid_field(x + i, y + i):
+        #     if self.board[x + i][y + i].color == color:
+        #         break
+        #     if self.board[x + i][y + i].color != color and self.board[x + i][y + i].color != '' and \
+        #             (self.board[x + i][y + i].piece != 'Q' or self.board[x + i][y + i].piece != 'B'):
+        #         break
+        #     if self.board[x + i][y + i].color != color and self.board[x + i][y + i].color != '' and \
+        #             (self.board[x + i][y + i].piece == 'Q' or self.board[x + i][y + i].piece == 'B'):
+        #         return True
+        #     i += 1
+        # i = 1
+        # while valid_field(x + i, y - i):
+        #     if self.board[x + i][y - i].color == color:
+        #         break
+        #     if self.board[x + i][y-i].color != color and self.board[x + i][y-i].color != '' and \
+        #             (self.board[x+i][y-i].piece != 'Q' and self.board[x+i][y-i].piece != 'B'):
+        #         break
+        #     if self.board[x + i][y - i].color != color and self.board[x + i][y - i].color != '' and \
+        #             (self.board[x + i][y - i].piece == 'Q' or self.board[x + i][y - i].piece == 'B'):
+        #         return True
+        #     i += 1
+        # i = 1
+        # while valid_field(x - i, y + i):
+        #     if self.board[x - i][y + i].color == color:
+        #         break
+        #     if self.board[x - i][y + i].color != color and self.board[x - i][y + i].color != '' and \
+        #             (self.board[x - i][y + i].piece != 'Q' and self.board[x - i][y + i].piece != 'B'):
+        #         break
+        #     if self.board[x - i][y + i].color != color and self.board[x - i][y + i].color != '' and \
+        #             (self.board[x - i][y + i].piece == 'Q' or self.board[x - i][y + i].piece == 'B'):
+        #         return True
+        #     i += 1
+        #
+        # if valid_field(x - 1, y - 2) and self.board[x - 1][y - 2].color != color and self.board[x - 1][y - 2].piece == 'k':
+        #     return True
+        # if valid_field(x - 2, y - 1) and self.board[x - 2][y - 1].color != color and self.board[x - 2][y - 1].piece == 'k':
+        #     return True
+        # if valid_field(x - 2, y + 1) and self.board[x - 2][y + 1].color != color and self.board[x - 2][y + 1].piece == 'k':
+        #     return True
+        # if valid_field(x - 1, y + 2) and self.board[x - 1][y + 2].color != color and self.board[x - 1][y + 2].piece == 'k':
+        #     return True
+        # if valid_field(x + 1, y + 2) and self.board[x + 1][y + 2].color != color and self.board[x + 1][y + 2].piece == 'k':
+        #     return True
+        # if valid_field(x + 2, y + 1) and self.board[x + 2][y + 1].color != color and self.board[x + 2][y + 1].piece == 'k':
+        #     return True
+        # if valid_field(x + 2, y - 1) and self.board[x + 2][y - 1].color != color and self.board[x + 2][y - 1].piece == 'k':
+        #     return True
+        # if valid_field(x + 1, y - 2) and self.board[x + 1][y - 2].color != color and self.board[x + 1][y - 2].piece == 'k':
+        #     return True
+        #
+        # if color == 'w':
+        #     if valid_field(x - 1, y - 1) and self.board[x - 1][y - 1].color == 'b' and self.board[x - 1][y - 1].piece == 'P':
+        #         return True
+        #     if valid_field(x - 1, y + 1) and self.board[x - 1][y + 1].color == 'b' and self.board[x - 1][y + 1].piece == 'P':
+        #         return True
+        #
+        # if color == 'b':
+        #     if valid_field(x + 1, y - 1) and self.board[x + 1][y - 1].color == 'w' and self.board[x+1][y-1].piece == 'P':
+        #         return True
+        #     if valid_field(x + 1, y + 1) and self.board[x + 1][y + 1].color == 'w' and self.board[x + 1][y + 1].piece == 'P':
+        #         return True
 
         return False
 
@@ -257,10 +257,11 @@ class Board:
         else:
             self.b_king_pos = (x, y)
 
-    def getAllMoves(self):
+    def getAllMoves(self, color):
         allMoves = []
         for x in range(8):
             for y in range(8):
-                for move in self.list_possible_moves(x, y):
-                    allMoves.append(((x, y), move))
+                if self.board[x][y].color == color:
+                    for move in self.list_possible_moves(x, y):
+                        allMoves.append(((x, y), move))
         return allMoves

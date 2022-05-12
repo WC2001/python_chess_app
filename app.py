@@ -39,11 +39,11 @@ def change():
     board.move(initial["x"], initial["y"], final["x"], final["y"])
     starttime = time.time()
     if color == 'w':
-        score, bestmove, startmove = alphaBetaMin(-1000, 1000, board, "b", 4)
+        score, bestmove = alphaBetaMin(-1000, 1000, board, "b", 3)
     else:
-        score, bestmove, startmove = alphaBetaMax(-1000, 1000, board, "w", 4)
+        score, bestmove = alphaBetaMax(-1000, 1000, board, "w", 3)
     print(time.time() - starttime)
-    board.move(startmove[0], startmove[1], bestmove[0], bestmove[1])
+    board.move(bestmove[0][0], bestmove[0][1], bestmove[1][0], bestmove[1][1])
     boardEncoder = BoardEncoder()
     res = BoardEncoder.encode(boardEncoder, board)
 
