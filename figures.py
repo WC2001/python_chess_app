@@ -190,7 +190,7 @@ class Pawn(Piece):
 
     def list_possible_moves(self, x, y, chessboard):
         board = chessboard.board
-        # TODO bicie w przelocie
+
         res = []
         if valid_field(x + self.step, y) and isinstance(board[x + self.step][y], Empty):
             res.append((x + self.step, y))
@@ -213,7 +213,7 @@ class Pawn(Piece):
                 chessboard.return_en_passant[1] == y + 1 and chessboard.player == self.color:
             res.append((x + self.step, y + 1))
         if x == self.start and isinstance(board[x + self.step][y], Empty) and \
-            isinstance(board[x + 2 * self.step][y], Empty):
+                isinstance(board[x + 2 * self.step][y], Empty):
             res.append((x + 2 * self.step, y))
 
         return res
@@ -223,13 +223,13 @@ class Queen(Bishop, Rook):
     def __init__(self, color):
         Piece.__init__(self, color, 'Q')
         self.value = 90
-        self.valueAdjustment = [[-2,  -1, -1, -0.5,-0.5, -1, -1, -2],
-                                [-1,   0, 0,   0,   0,   0,   0,  -1],
-                                [-1,   0, 0.5, 0.5, 0.5, 0.5, 0,  -1],
+        self.valueAdjustment = [[-2, -1, -1, -0.5, -0.5, -1, -1, -2],
+                                [-1, 0, 0, 0, 0, 0, 0, -1],
+                                [-1, 0, 0.5, 0.5, 0.5, 0.5, 0, -1],
                                 [-0.5, 0, 0.5, 0.5, 0.5, 0.5, 0, -0.5],
-                                [ 0,  0,  0.5, 0.5, 0.5, 0.5, 0, -0.5],
-                                [-1, 0.5, 0.5, 0.5, 0.5, 0.5, 0,  -1],
-                                [-1,  0,  0.5, 0,    0,   0,  0, -1],
+                                [0, 0, 0.5, 0.5, 0.5, 0.5, 0, -0.5],
+                                [-1, 0.5, 0.5, 0.5, 0.5, 0.5, 0, -1],
+                                [-1, 0, 0.5, 0, 0, 0, 0, -1],
                                 [-2, -1, -1, -0.5, -0.5, -1, -1, -2]]
 
     def list_possible_moves(self, x, y, board):
@@ -270,16 +270,52 @@ class King(Piece):
             res.append((x, y - 1))
         if valid_field(x, y + 1) and board[x][y + 1].color != self.color:
             res.append((x, y + 1))
-        #CASTLE
-        if self.color == 'w' and chessboard.w_king_intact and chessboard.w_short and isinstance(board[x][y+1], Empty) and \
-                isinstance(board[x][y+2], Empty):
-            if chessboard.test_move((x, y+1), x, y) and chessboard.test_move((x, y+2), x, y+1):
-                res.append((x, y+2))
+        # CASTLE
+        if self.color == 'w' and chessboard.w_king_intact and chessboard.w_short:
+            if chessboard.player == 'w' and isinstance(board[x][y + 1], Empty) and \
+                    isinstance(board[x][y + 2], Empty):
+                if chessboard.test_move((x, y + 1), x, y) and chessboard.test_move((x, y + 2), x, y + 1):
+                    res.append((x, y + 2))
 
-        if self.color == 'w' and chessboard.w_king_intact and chessboard.w_long and isinstance(board[x][y - 1], Empty) and \
-                isinstance(board[x][y - 2], Empty) and isinstance(board[x][y - 3], Empty):
-            if chessboard.test_move((x, y - 1), x, y) and chessboard.test_move((x, y - 2), x, y-1):
-                res.append((x, y - 2))
+            if chessboard.player == 'b' and isinstance(board[x][y - 1], Empty) and \
+                    isinstance(board[x][y - 2], Empty):
+                if chessboard.test_move((x, y - 1), x, y) and chessboard.test_move((x, y - 2), x, y - 1):
+                    res.append((x, y - 2))
+
+        if self.color == 'w' and chessboard.w_king_intact and chessboard.w_long:
+
+            if chessboard.player == 'w' and isinstance(board[x][y - 1], Empty) and \
+                    isinstance(board[x][y - 2], Empty) and isinstance(board[x][y - 3], Empty):
+                if chessboard.test_move((x, y - 1), x, y) and chessboard.test_move((x, y - 2), x, y - 1):
+                    res.append((x, y - 2))
+
+            if chessboard.player == 'b' and isinstance(board[x][y + 1], Empty) and \
+                    isinstance(board[x][y + 2], Empty) and isinstance(board[x][y + 3], Empty):
+                if chessboard.test_move((x, y + 1), x, y) and chessboard.test_move((x, y + 2), x, y + 1):
+                    res.append((x, y + 2))
+
+        if self.color == 'b' and chessboard.b_king_intact and chessboard.b_short:
+            if chessboard.player == 'w' and isinstance(board[x][y + 1], Empty) and \
+                    isinstance(board[x][y + 2], Empty):
+                if chessboard.test_move((x, y + 1), x, y) and chessboard.test_move((x, y + 2), x, y + 1):
+                    res.append((x, y + 2))
+
+            if chessboard.player == 'b' and isinstance(board[x][y - 1], Empty) and \
+                    isinstance(board[x][y - 2], Empty):
+                if chessboard.test_move((x, y - 1), x, y) and chessboard.test_move((x, y - 2), x, y - 1):
+                    res.append((x, y - 2))
+
+        if self.color == 'b' and chessboard.b_king_intact and chessboard.b_long:
+
+            if chessboard.player == 'w' and isinstance(board[x][y - 1], Empty) and \
+                    isinstance(board[x][y - 2], Empty) and isinstance(board[x][y - 3], Empty):
+                if chessboard.test_move((x, y - 1), x, y) and chessboard.test_move((x, y - 2), x, y - 1):
+                    res.append((x, y - 2))
+
+            if chessboard.player == 'b' and isinstance(board[x][y + 1], Empty) and \
+                    isinstance(board[x][y + 2], Empty) and isinstance(board[x][y + 3], Empty):
+                if chessboard.test_move((x, y + 1), x, y) and chessboard.test_move((x, y + 2), x, y + 1):
+                    res.append((x, y + 2))
+
 
         return res
-

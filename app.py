@@ -42,12 +42,16 @@ def change():
 
     board = Board(inputboard, w_king, b_king, intact, player, enpassant)
     color = board.board[initial["x"]][initial["y"]].color
+    print(evaluate(board.board, color))
     board.move(initial["x"], initial["y"], final["x"], final["y"])
+    print(evaluate(board.board, color))
     if color == 'w':
-        score, bestmove, startmove = alphaBetaMin(-1000, 1000, board, "b", 4)
+        score, bestmove, startmove = alphaBetaMin(-1000, 1000, board, "b", 3, color)
     else:
-        score, bestmove, startmove = alphaBetaMax(-1000, 1000, board, "w", 4)
+        score, bestmove, startmove = alphaBetaMax(-1000, 1000, board, "w", 3, color)
     board.move(startmove[0], startmove[1], bestmove[0], bestmove[1])
+
+    print(evaluate(board.board, color))
     boardEncoder = BoardEncoder()
     res = BoardEncoder.encode(boardEncoder, board)
     return jsonify({"result": res})

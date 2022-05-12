@@ -252,8 +252,8 @@ class Board:
 
     def move(self, x, y, x1, y1):
         color = self.board[x][y].color
-        # if isinstance(self.board[x][y], King):
-        #     self.setKingPosition(color, x1, y1)
+        if isinstance(self.board[x][y], King):
+            self.setKingPosition(color, x1, y1)
         # self.board[x1][y1], self.board[x][y] = self.board[x][y], self.board[x1][y1]
 
         if color == self.player:
