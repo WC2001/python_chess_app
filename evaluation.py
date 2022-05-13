@@ -25,13 +25,11 @@ def alphaBetaMax(alpha, beta, chessBoard, color, depth, player):
     else:
         color_op = 'w'
     for i in range(64):
-        # print(alpha, beta)
         if chessBoard.board[i//8][i % 8].color != color:
             pass
         else:
             for move in chessBoard.list_possible_moves(i//8, i % 8):
                 figureCaptured = chessBoard.board[move[0]][move[1]]
-                # chessBoard.move(i // 8, i % 8, move[0], move[1])
                 figureMoved = chessBoard.board[i // 8][i % 8]
                 chessBoard.board[i // 8][i % 8] = Empty()
                 chessBoard.board[move[0]][move[1]] = figureMoved
@@ -47,7 +45,6 @@ def alphaBetaMax(alpha, beta, chessBoard, color, depth, player):
                 chessBoard.board[move[0]][move[1]] = figureCaptured
                 if isinstance(figureMoved, King):
                     chessBoard.setKingPosition(figureMoved.color, i // 8, i % 8)
-                # chessBoard.unmove(move[0], move[1], i // 8, i % 8, figureCaptured)
                 if beta <= alpha:
                     break
 
@@ -66,12 +63,10 @@ def alphaBetaMin(alpha, beta, chessBoard, color, depth, player):
     else:
         color_op = 'w'
     for i in range(64):
-        # print(alpha, beta)
         if chessBoard.board[i//8][i%8].color != color:
             pass
         else:
             for move in chessBoard.list_possible_moves(i//8, i % 8):
-                # chessBoard.move(i//8, i % 8, move[0], move[1])
                 figureCaptured = chessBoard.board[move[0]][move[1]]
                 figureMoved = chessBoard.board[i // 8][i % 8]
                 figureCaptured = chessBoard.board[move[0]][move[1]]
@@ -85,7 +80,6 @@ def alphaBetaMin(alpha, beta, chessBoard, color, depth, player):
                     minval = score
                     bestmove = move
                     beststart = (i // 8, i % 8)
-                # chessBoard.unmove(move[0], move[1], i//8, i % 8, figureCaptured)
                 if isinstance(figureMoved, King):
                     chessBoard.setKingPosition(figureMoved.color, i//8, i % 8)
                 chessBoard.board[i // 8][i % 8] = figureMoved
@@ -95,26 +89,6 @@ def alphaBetaMin(alpha, beta, chessBoard, color, depth, player):
                     break
     return minval, bestmove, beststart
 
-# if __name__ == "__main__":
-#
-#     chessBoard = Board([], (7, 4), (0, 4))
-#     chessBoard.w_king_pos = (7, 4)
-#     chessBoard.b_king_pos = (0, 4)
-#     chessBoard.board = [[Rook('b'), Knight('b'), Bishop('b'), Queen('b'), King('b'), Bishop('b'), Knight('b'), Rook('b')],
-#                         [Pawn('b'), Pawn('b'), Pawn('b'), Pawn('b'), Pawn('b'), Pawn('b'), Empty(), Pawn('b')],
-#                         [Empty(), Empty(), Empty(), Empty(), Empty(), Empty(), Empty(), Empty()],
-#                         [Empty(), Empty(), Empty(), Queen('b'), Empty(), Empty(), Empty(), Empty()],
-#                         [Empty(), Empty(), Empty(), Empty(), Empty(), Empty(), Empty(), Empty()],
-#                         [Empty(), Empty(), Empty(), Empty(), Empty(), Empty(), Empty(), Empty()],
-#                         [Pawn('w'), Pawn('w'), Pawn('w'), Empty(), Pawn('w'), Pawn('w'), Pawn('w'), Pawn('w')],
-#                         [Rook('w'), Knight('w'), Bishop('w'), Queen('w'), King('w'), Bishop('w'), Knight('w'),
-#                          Rook('w')]
-#                         ]
-#
-#     s, m, st = alphaBetaMax(-100000, 100000, chessBoard, 'w', 4)
-#     print(s)
-#     print(st)
-#     print(m)
-#
+
 
 

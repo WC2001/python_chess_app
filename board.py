@@ -66,10 +66,6 @@ class Board:
 
     def in_check(self, x, y):
         color = self.board[x][y].color
-        # for i in range(8):
-        #     for j in range(8):
-        #         if self.board[i][j].color != color and (x, y) in self.board[i][j].list_possible_moves(i, j, self.board):
-        #             return True
         i = 1
         while valid_field(x, y + i):
             if self.board[x][y + i].color == color:
@@ -133,7 +129,7 @@ class Board:
             if self.board[x + i][y + i].color == color:
                 break
             if self.board[x + i][y + i].color != color and self.board[x + i][y + i].color != '' and \
-                    (self.board[x + i][y + i].piece != 'Q' or self.board[x + i][y + i].piece != 'B'):
+                    (self.board[x + i][y + i].piece != 'Q' and self.board[x + i][y + i].piece != 'B'):
                 break
             if self.board[x + i][y + i].color != color and self.board[x + i][y + i].color != '' and \
                     (self.board[x + i][y + i].piece == 'Q' or self.board[x + i][y + i].piece == 'B'):
@@ -162,47 +158,33 @@ class Board:
                 return True
             i += 1
 
-        if valid_field(x - 1, y - 2) and self.board[x - 1][y - 2].color != color and self.board[x - 1][
-            y - 2].piece == 'k':
+        if valid_field(x - 1, y - 2) and self.board[x - 1][y - 2].color != color and self.board[x - 1][y - 2].piece == 'k':
             return True
-        if valid_field(x - 2, y - 1) and self.board[x - 2][y - 1].color != color and self.board[x - 2][
-            y - 1].piece == 'k':
+        if valid_field(x - 2, y - 1) and self.board[x - 2][y - 1].color != color and self.board[x - 2][y - 1].piece == 'k':
             return True
-        if valid_field(x - 2, y + 1) and self.board[x - 2][y + 1].color != color and self.board[x - 2][
-            y + 1].piece == 'k':
+        if valid_field(x - 2, y + 1) and self.board[x - 2][y + 1].color != color and self.board[x - 2][y + 1].piece == 'k':
             return True
-        if valid_field(x - 1, y + 2) and self.board[x - 1][y + 2].color != color and self.board[x - 1][
-            y + 2].piece == 'k':
+        if valid_field(x - 1, y + 2) and self.board[x - 1][y + 2].color != color and self.board[x - 1][y + 2].piece == 'k':
             return True
-        if valid_field(x + 1, y + 2) and self.board[x + 1][y + 2].color != color and self.board[x + 1][
-            y + 2].piece == 'k':
+        if valid_field(x + 1, y + 2) and self.board[x + 1][y + 2].color != color and self.board[x + 1][y + 2].piece == 'k':
             return True
-        if valid_field(x + 2, y + 1) and self.board[x + 2][y + 1].color != color and self.board[x + 2][
-            y + 1].piece == 'k':
+        if valid_field(x + 2, y + 1) and self.board[x + 2][y + 1].color != color and self.board[x + 2][y + 1].piece == 'k':
             return True
-        if valid_field(x + 2, y - 1) and self.board[x + 2][y - 1].color != color and self.board[x + 2][
-            y - 1].piece == 'k':
+        if valid_field(x + 2, y - 1) and self.board[x + 2][y - 1].color != color and self.board[x + 2][y - 1].piece == 'k':
             return True
-        if valid_field(x + 1, y - 2) and self.board[x + 1][y - 2].color != color and self.board[x + 1][
-            y - 2].piece == 'k':
+        if valid_field(x + 1, y - 2) and self.board[x + 1][y - 2].color != color and self.board[x + 1][y - 2].piece == 'k':
             return True
-
         if color == 'w':
-            if valid_field(x - 1, y - 1) and self.board[x - 1][y - 1].color == 'b' and self.board[x - 1][
-                y - 1].piece == 'P':
+            if valid_field(x - 1, y - 1) and self.board[x - 1][y - 1].color == 'b' and self.board[x - 1][y - 1].piece == 'P':
                 return True
-            if valid_field(x - 1, y + 1) and self.board[x - 1][y + 1].color == 'b' and self.board[x - 1][
-                y + 1].piece == 'P':
+            if valid_field(x - 1, y + 1) and self.board[x - 1][y + 1].color == 'b' and self.board[x - 1][y + 1].piece == 'P':
                 return True
 
         if color == 'b':
-            if valid_field(x + 1, y - 1) and self.board[x + 1][y - 1].color == 'w' and self.board[x + 1][
-                y - 1].piece == 'P':
+            if valid_field(x + 1, y - 1) and self.board[x + 1][y - 1].color == 'w' and self.board[x + 1][y - 1].piece == 'P':
                 return True
-            if valid_field(x + 1, y + 1) and self.board[x + 1][y + 1].color == 'w' and self.board[x + 1][
-                y + 1].piece == 'P':
+            if valid_field(x + 1, y + 1) and self.board[x + 1][y + 1].color == 'w' and self.board[x + 1][y + 1].piece == 'P':
                 return True
-
         return False
 
     def list_possible_moves(self, x, y):
@@ -252,76 +234,26 @@ class Board:
 
     def move(self, x, y, x1, y1):
         color = self.board[x][y].color
+        playerTurn = color == self.player
+
         if isinstance(self.board[x][y], King):
             self.setKingPosition(color, x1, y1)
-        # self.board[x1][y1], self.board[x][y] = self.board[x][y], self.board[x1][y1]
+            self.updateCastle(x, y, x1, y1)
+        self.setEnPassant(playerTurn, -1, -1)
+        if isinstance(self.board[x][y], Pawn):
+            self.en_passantUpdate(color, x, y, x1)
 
-        if color == self.player:
-
-            self.en_passant = [-1, -1]
-            if x == 6 and x1 == 4 and self.board[x][y].piece == 'P':
-                self.en_passant[0] = 5
-                self.en_passant[1] = y
-            if x == 1 and x1 == 3 and self.board[x][y].piece == 'P':
-                self.en_passant[0] = 2
-                self.en_passant[1] = y
-
-        if color != self.player:
-
-            self.return_en_passant = [-1, -1]
-            if x == 6 and x1 == 4 and self.board[x][y].piece == 'P':
-                self.return_en_passant[0] = 5
-                self.return_en_passant[1] = y
-            if x == 1 and x1 == 3 and self.board[x][y].piece == 'P':
-                self.return_en_passant[0] = 2
-                self.return_en_passant[1] = y
-
-        if self.board[x][y].piece == 'K' and y1 == y + 2:
-            self.move(x, y+3, x, y+1)
-            if self.board[x][y].color == 'w':
-                self.w_short = 0
-                self.w_king_intact = 0
-            if self.board[x][y].color == 'b':
-                self.b_long = 0
-                self.b_king_intact = 0
-        if self.board[x][y].piece == 'K' and y1 == y - 2:
-            self.move(x, y - 4, x, y - 1)
-            if self.board[x][y].color == 'w':
-                self.w_long = 0
-                self.w_king_intact = 0
-            if self.board[x][y].color == 'b':
-                self.b_short = 0
-                self.b_king_intact = 0
-        if self.board[x][y].piece == 'K':
-            if self.board[x][y].color == 'w':
-                self.w_king_intact = 0
-            else:
-                self.b_king_intact = 0
-
-        if self.board[x][y].piece == 'R' and self.player == 'w':
-
+        if isinstance(self.board[x][y], Rook) and self.player == 'w':
             if y == 0:
-                if self.board[x][y].color == 'b':
-                    self.b_long = 0
-                if self.board[x][y].color == 'w':
-                    self.w_long = 0
+                self.changeIntact(color, long=True)
             if y == 7:
-                if self.board[x][y].color == 'b':
-                    self.b_short = 0
-                if self.board[x][y].color == 'w':
-                    self.w_short = 0
+                self.changeIntact(color, short=True)
 
-        if self.board[x][y].piece == 'R' and self.player == 'b':
+        if isinstance(self.board[x][y], Rook)and self.player == 'b':
             if y == 0:
-                if self.board[x][y].color == 'b':
-                    self.b_short = 0
-                if self.board[x][y].color == 'w':
-                    self.w_short = 0
+                self.changeIntact(color, short=True)
             if y == 7:
-                if self.board[x][y].color == 'b':
-                    self.b_long = 0
-                if self.board[x][y].color == 'w':
-                    self.w_long = 0
+                self.changeIntact(color, long=True)
 
         if self.player == self.board[x][y].color and self.board[x][y].piece == 'P' and \
                 x1 == self.return_en_passant[0] and y1 == self.return_en_passant[1]:
@@ -341,10 +273,6 @@ class Board:
             if not self.can_move('w'):
                 print("White king mated")
 
-    def unmove(self, x1, y1, x, y, figure):
-        if isinstance(self.board[x1][y1], King):
-            self.setKingPosition(self.board[x1][y1].color, x, y)
-        self.board[x1][y1], self.board[x][y] = figure, self.board[x1][y1]
 
     def setKingPosition(self, color, x, y):
         if color == 'w':
@@ -352,3 +280,57 @@ class Board:
         else:
             self.b_king_pos = (x, y)
 
+    def en_passantUpdate(self, color, x, y, x1):
+        playerTurn = color == self.player
+        self.setEnPassant(playerTurn, -1, -1)
+        if x == 6 and x1 == 4:
+            self.setEnPassant(playerTurn, 5, y)
+        elif x == 1 and x1 == 3:
+            self.setEnPassant(playerTurn, 2, y)
+
+
+    def setEnPassant(self, playerTurn, x, y):
+        if playerTurn:
+            self.en_passant[0] = x
+            self.en_passant[1] = y
+        else:
+            self.return_en_passant[0] = x
+            self.return_en_passant[1] = y
+
+    def updateCastle(self, x, y, x1, y1):
+        color = self.board[x][y].color
+        if self.player == 'w':
+            if y1 == y + 2:
+                self.move(x, y+3, x, y+1)
+                self.changeIntact(color, king=True, short=True)
+            if y1 == y - 2:
+                self.move(x, y - 4, x, y - 1)
+                self.changeIntact(color, king=True, long=True)
+            else:
+                self.changeIntact(color, king=True)
+        else:
+            if y1 == y - 2:
+                self.move(x, y - 3, x, y - 1)
+                self.changeIntact(color, king=True, short=True)
+            if y1 == y + 2:
+                self.move(x, y + 4, x, y + 1)
+                self.changeIntact(color, king=True, long=True)
+            else:
+                self.changeIntact(color, king=True)
+
+
+    def changeIntact(self, color, king = False, long = False, short = False):
+        if color == 'w':
+            if king:
+                self.w_king_intact = 0
+            if long:
+                self.w_long = 0
+            elif short:
+                self.w_short = 0
+        if color == 'b':
+            if king:
+                self.b_king_intact = 0
+            if long:
+                self.b_long = 0
+            elif short:
+                self.b_short = 0
