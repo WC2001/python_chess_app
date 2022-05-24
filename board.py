@@ -53,7 +53,7 @@ class Board:
 
         self.board = B
         self.w_king_pos = (w_king["x"], w_king["y"])
-        self.b_king_pos = (b_king["x"], w_king["y"])
+        self.b_king_pos = (b_king["x"], b_king["y"])
         self.w_short = intact["w_short"]
         self.w_long = intact["w_long"]
         self.b_short = intact["b_short"]
@@ -63,6 +63,8 @@ class Board:
         self.player = player
         self.en_passant = [-1, -1]
         self.return_en_passant = en_passant
+        self.w_king_mated = 0
+        self.b_king_mated = 0
 
     def in_check(self, x, y):
         color = self.board[x][y].color
@@ -75,6 +77,8 @@ class Board:
                 break
             if self.board[x][y + i].color != color and self.board[x][y + i].color != '' and \
                     (self.board[x][y + i].piece == 'Q' or self.board[x][y + i].piece == 'R'):
+                print(x, y)
+                print('1', (x, y+i))
                 return True
             i += 1
         i = 1
@@ -86,6 +90,7 @@ class Board:
                 break
             if self.board[x][y - i].color != color and self.board[x][y - i].color != '' and \
                     (self.board[x][y - i].piece == 'Q' or self.board[x][y - i].piece == 'R'):
+                print('2', (x, y-i))
                 return True
             i += 1
 
@@ -98,6 +103,7 @@ class Board:
                 break
             if self.board[x - i][y].color != color and self.board[x - i][y].color != '' and \
                     (self.board[x - i][y].piece == 'Q' or self.board[x - i][y].piece == 'R'):
+                print('3', (x-i, y))
                 return True
             i += 1
 
@@ -110,6 +116,7 @@ class Board:
                 break
             if self.board[x + i][y].color != color and self.board[x + i][y].color != '' and \
                     (self.board[x + i][y].piece == 'Q' or self.board[x + i][y].piece == 'R'):
+                print('4', (x+i, y))
                 return True
             i += 1
 
@@ -122,6 +129,7 @@ class Board:
                 break
             if self.board[x - i][y - i].color != color and self.board[x - i][y - i].color != '' and \
                     (self.board[x - i][y - i].piece == 'Q' or self.board[x - i][y - i].piece == 'B'):
+                print('5', (x-i, y-i))
                 return True
             i += 1
         i = 1
@@ -133,6 +141,7 @@ class Board:
                 break
             if self.board[x + i][y + i].color != color and self.board[x + i][y + i].color != '' and \
                     (self.board[x + i][y + i].piece == 'Q' or self.board[x + i][y + i].piece == 'B'):
+                print('6', (x+i, y+i))
                 return True
             i += 1
         i = 1
@@ -144,6 +153,7 @@ class Board:
                 break
             if self.board[x + i][y - i].color != color and self.board[x + i][y - i].color != '' and \
                     (self.board[x + i][y - i].piece == 'Q' or self.board[x + i][y - i].piece == 'B'):
+                print('7', (x+i, y-i))
                 return True
             i += 1
         i = 1
@@ -155,36 +165,59 @@ class Board:
                 break
             if self.board[x - i][y + i].color != color and self.board[x - i][y + i].color != '' and \
                     (self.board[x - i][y + i].piece == 'Q' or self.board[x - i][y + i].piece == 'B'):
+                print('8', (x-i, y+i))
                 return True
             i += 1
 
         if valid_field(x - 1, y - 2) and self.board[x - 1][y - 2].color != color and self.board[x - 1][y - 2].piece == 'k':
+            print('9')
             return True
         if valid_field(x - 2, y - 1) and self.board[x - 2][y - 1].color != color and self.board[x - 2][y - 1].piece == 'k':
+            print('10')
             return True
         if valid_field(x - 2, y + 1) and self.board[x - 2][y + 1].color != color and self.board[x - 2][y + 1].piece == 'k':
+            print('11')
             return True
         if valid_field(x - 1, y + 2) and self.board[x - 1][y + 2].color != color and self.board[x - 1][y + 2].piece == 'k':
+            print('12')
             return True
         if valid_field(x + 1, y + 2) and self.board[x + 1][y + 2].color != color and self.board[x + 1][y + 2].piece == 'k':
+            print('13')
             return True
         if valid_field(x + 2, y + 1) and self.board[x + 2][y + 1].color != color and self.board[x + 2][y + 1].piece == 'k':
+            print('14')
             return True
         if valid_field(x + 2, y - 1) and self.board[x + 2][y - 1].color != color and self.board[x + 2][y - 1].piece == 'k':
+            print('15')
             return True
         if valid_field(x + 1, y - 2) and self.board[x + 1][y - 2].color != color and self.board[x + 1][y - 2].piece == 'k':
+            print('16')
             return True
         if color == 'w':
-            if valid_field(x - 1, y - 1) and self.board[x - 1][y - 1].color == 'b' and self.board[x - 1][y - 1].piece == 'P':
+            i = -1 if self.player == 'w' else 1
+            if valid_field(x + i, y - 1) and self.board[x + i][y - 1].color == 'b' and self.board[x + i][y - 1].piece == 'P':
+                print('17')
                 return True
-            if valid_field(x - 1, y + 1) and self.board[x - 1][y + 1].color == 'b' and self.board[x - 1][y + 1].piece == 'P':
+            if valid_field(x + i, y + 1) and self.board[x + i][y + 1].color == 'b' and self.board[x + i][y + 1].piece == 'P':
+                print('18')
                 return True
 
         if color == 'b':
-            if valid_field(x + 1, y - 1) and self.board[x + 1][y - 1].color == 'w' and self.board[x + 1][y - 1].piece == 'P':
+            i = 1 if self.player == 'w' else -1
+            if valid_field(x + i, y - 1) and self.board[x + i][y - 1].color == 'w' and self.board[x + i][y - 1].piece == 'P':
+                print('19')
                 return True
-            if valid_field(x + 1, y + 1) and self.board[x + 1][y + 1].color == 'w' and self.board[x + 1][y + 1].piece == 'P':
+            if valid_field(x + i, y + 1) and self.board[x + i][y + 1].color == 'w' and self.board[x + i][y + 1].piece == 'P':
+                print('20')
                 return True
+
+        if color == 'w' and abs(self.b_king_pos[0] - x) <= 1 and abs(self.b_king_pos[1] - y) <= 1:
+            print('21')
+            return True
+        if color == 'b' and abs(self.w_king_pos[0] - x) <= 1 and abs(self.w_king_pos[1] - y) <= 1:
+            print('22')
+            return True
+
         return False
 
     def list_possible_moves(self, x, y):
@@ -219,6 +252,12 @@ class Board:
                 self.b_king_pos = (x, y)
             return False
 
+        if old.color == 'b' and old.piece == 'K':
+            self.b_king_pos = (x, y)
+
+        if old.color == 'w' and old.piece == 'K':
+            self.w_king_pos = (x, y)
+
         self.board[x][y] = old
         self.board[move[0]][move[1]] = move_field
         return True
@@ -228,6 +267,7 @@ class Board:
             for j in range(8):
                 if self.board[i][j].color == color:
                     if len(self.list_possible_moves(i, j)) > 0:
+                        print(self.board[i][j].piece, self.list_possible_moves(i, j))
                         return True
 
         return False
@@ -237,6 +277,7 @@ class Board:
         playerTurn = color == self.player
 
         if isinstance(self.board[x][y], King):
+            print('king')
             self.setKingPosition(color, x1, y1)
             self.updateCastle(x, y, x1, y1)
         self.setEnPassant(playerTurn, -1, -1)
@@ -249,7 +290,7 @@ class Board:
             if y == 7:
                 self.changeIntact(color, short=True)
 
-        if isinstance(self.board[x][y], Rook)and self.player == 'b':
+        if isinstance(self.board[x][y], Rook) and self.player == 'b':
             if y == 0:
                 self.changeIntact(color, short=True)
             if y == 7:
@@ -267,12 +308,13 @@ class Board:
         if color == 'w' and self.in_check(self.b_king_pos[0], self.b_king_pos[1]):
             print("Black king checked.")
             if not self.can_move('b'):
+                self.b_king_mated = 1
                 print("Black king mated")
         if color == 'b' and self.in_check(self.w_king_pos[0], self.w_king_pos[1]):
             print("White king checked.")
             if not self.can_move('w'):
+                self.w_king_mated = 1
                 print("White king mated")
-
 
     def setKingPosition(self, color, x, y):
         if color == 'w':
@@ -318,8 +360,7 @@ class Board:
             else:
                 self.changeIntact(color, king=True)
 
-
-    def changeIntact(self, color, king = False, long = False, short = False):
+    def changeIntact(self, color, king=False, long=False, short=False):
         if color == 'w':
             if king:
                 self.w_king_intact = 0
@@ -334,3 +375,8 @@ class Board:
                 self.b_long = 0
             elif short:
                 self.b_short = 0
+
+    def mated(self):
+        return self.w_king_mated or self.b_king_mated
+
+

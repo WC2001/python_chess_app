@@ -13,7 +13,8 @@ class BoardEncoder(json.JSONEncoder):
                     [FieldEncoder().encode(obj.board[i][j]) for j in range(8)] for i in range(8)
                 ],
                 'intact': BoardIntactEncoder().encode(obj),
-                'en_passant': [obj.return_en_passant[0], obj.return_en_passant[1]]
+                'en_passant': [obj.return_en_passant[0], obj.return_en_passant[1]],
+                'mate': [obj.w_king_mated, obj.b_king_mated]
 
             }
             return res

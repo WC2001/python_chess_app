@@ -14,7 +14,7 @@ def evaluate(board, player):
 
 
 def alphaBetaMax(alpha, beta, chessBoard, color, depth, player):
-    if depth == 0 or not chessBoard.can_move("w") or not chessBoard.can_move('b'):
+    if depth == 0 or chessBoard.mated():
         e = evaluate(chessBoard.board, player)
         return e, (0, 0), (0, 0)
     bestmove = None
@@ -52,7 +52,7 @@ def alphaBetaMax(alpha, beta, chessBoard, color, depth, player):
 
 
 def alphaBetaMin(alpha, beta, chessBoard, color, depth, player):
-    if depth == 0 or not chessBoard.can_move("w") or not chessBoard.can_move('b'):
+    if depth == 0 or chessBoard.mated():
         e = evaluate(chessBoard.board, player)
         return e, (0, 0), (0, 0)
     bestmove = None

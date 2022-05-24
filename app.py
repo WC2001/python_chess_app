@@ -26,6 +26,7 @@ def moves():
     # print(request.json['position'])
     # print(request.json['w_king'], request.json['b_king'])
     board = Board(inputboard, w_king, b_king, intact, player, enpassant)
+
     return jsonify({"result": board.list_possible_moves(request.json['position']['x'], request.json['position']['y'])})
 
 
@@ -44,14 +45,26 @@ def change():
     color = board.board[initial["x"]][initial["y"]].color
     print(evaluate(board.board, color))
     board.move(initial["x"], initial["y"], final["x"], final["y"])
-    print(evaluate(board.board, color))
+    print('w', board.w_king_pos)
+    print('b', board.b_king_pos)
+    print('-----------')
+    # print(evaluate(board.board, color))
+    if board.mated():
+        print('111')
+        boardEncoder = BoardEncoder()
+        res = BoardEncoder.encode(boardEncoder, board)
+        return jsonify({"result": res})
+
     if color == 'w':
         score, bestmove, startmove = alphaBetaMin(-1000, 1000, board, "b", 3, color)
     else:
         score, bestmove, startmove = alphaBetaMax(-1000, 1000, board, "w", 3, color)
     board.move(startmove[0], startmove[1], bestmove[0], bestmove[1])
 
-    print(evaluate(board.board, color))
+    # print(evaluate(board.board, color))
+    print('w', board.w_king_pos)
+    print('b', board.b_king_pos)
+    print('-----------')
     boardEncoder = BoardEncoder()
     res = BoardEncoder.encode(boardEncoder, board)
     return jsonify({"result": res})

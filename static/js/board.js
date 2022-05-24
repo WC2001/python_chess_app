@@ -1,5 +1,6 @@
 import {ChessField} from "./field.js";
 import {query, queryAll} from "./utils.js";
+import {blackWin, whiteWin} from "./events.js";
 
 export class ChessBoard extends HTMLElement {
     board;
@@ -49,6 +50,12 @@ export class ChessBoard extends HTMLElement {
         console.log(query`chessboard-element`.getEnPassant());
         console.log(query`chessboard-element`.getIntact());
         console.log(array.board)
+        console.log(array.mate)
+        if(array.mate[0] === 1)
+            document.body.dispatchEvent(blackWin)
+        if(array.mate[1] === 1)
+            document.body.dispatchEvent(whiteWin)
+
         console.groupEnd()
 
         return array.board;

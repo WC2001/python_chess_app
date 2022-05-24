@@ -103,6 +103,7 @@ export class ChessField extends HTMLElement {
                 else{
                     const initial = query`.selected`.getPosition();
                     const kings_positions = query`chessboard-element`.getKings();
+                    console.log("kings:", kings_positions)
                     const intact1 = query`chessboard-element`.getIntact();
                     console.log(intact1);
                     const response = await fetch('/changePosition', {
