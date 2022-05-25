@@ -23,8 +23,10 @@ export class ChessField extends HTMLElement {
                     field.classList.remove('possible');
                 })
                 const kings_positions = query`chessboard-element`.getKings();
-                this.classList.add('selected')
-                this.listenerMode = "move"
+                const intact1 = query`chessboard-element`.getIntact();
+                this.classList.add('selected');
+                this.listenerMode = "move";
+                console.log(intact1);
                 console.log(kings_positions);
                 const response = await fetch("/moves", {
                     method: "POST",
@@ -34,7 +36,11 @@ export class ChessField extends HTMLElement {
                     },
                     body: JSON.stringify({
                         position: this.getPosition(), board: query`chessboard-element`.getBoard(),
-                        w_king: kings_positions.w_king, b_king: kings_positions.b_king
+                        w_king: kings_positions.w_king, b_king: kings_positions.b_king,
+                        intact: {'w_king': intact1.w_king_intact, 'w_short': intact1.w_short, 'w_long': intact1.w_long,
+                            'b_king': intact1.b_king_intact, 'b_short': intact1.b_short, 'b_long': intact1.b_long},
+                        player: localStorage.getItem('color'),
+                        en_passant: query`chessboard-element`.getEnPassant()
                     })
 
                 })
@@ -66,6 +72,7 @@ export class ChessField extends HTMLElement {
 
                     document.body.addEventListener('piecechosen', async () => {
                     const initial = query`.selected`.getPosition();
+                    const intact1 = query`chessboard-element`.getIntact();
                     const kings_positions = query`chessboard-element`.getKings();
                     const response = await fetch('/changePosition', {
                         method: 'POST',
@@ -77,7 +84,12 @@ export class ChessField extends HTMLElement {
                             board: query`chessboard-element`.getBoard(),
                             w_king: kings_positions.w_king, b_king: kings_positions.b_king,
                             initial: {'x': initial.x, 'y': initial.y},
-                            final: {'x': this.getPosition().x, 'y': this.getPosition().y}
+                            final: {'x': this.getPosition().x, 'y': this.getPosition().y},
+                            intact: {'w_king': intact1.w_king_intact, 'w_short': intact1.w_short, 'w_long': intact1.w_long,
+                            'b_king': intact1.b_king_intact, 'b_short': intact1.b_short, 'b_long': intact1.b_long},
+                            player: localStorage.getItem('color'),
+                            en_passant: query`chessboard-element`.getEnPassant()
+
                         })
                     })
                     // const data = JSON.parse(await response.json());
@@ -91,6 +103,9 @@ export class ChessField extends HTMLElement {
                 else{
                     const initial = query`.selected`.getPosition();
                     const kings_positions = query`chessboard-element`.getKings();
+                    console.log("kings:", kings_positions)
+                    const intact1 = query`chessboard-element`.getIntact();
+                    console.log(intact1);
                     const response = await fetch('/changePosition', {
                         method: 'POST',
                         headers: {
@@ -101,7 +116,11 @@ export class ChessField extends HTMLElement {
                             board: query`chessboard-element`.getBoard(),
                             w_king: kings_positions.w_king, b_king: kings_positions.b_king,
                             initial: {'x': initial.x, 'y': initial.y},
-                            final: {'x': this.getPosition().x, 'y': this.getPosition().y}
+                            final: {'x': this.getPosition().x, 'y': this.getPosition().y},
+                            intact: {'w_king': intact1.w_king_intact, 'w_short': intact1.w_short, 'w_long': intact1.w_long,
+                            'b_king': intact1.b_king_intact, 'b_short': intact1.b_short, 'b_long': intact1.b_long},
+                            player: localStorage.getItem('color'),
+                            en_passant: query`chessboard-element`.getEnPassant()
                         })
                     })
                     // const data = JSON.parse(await response.json());

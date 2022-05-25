@@ -1,5 +1,6 @@
 import {ChessField} from "./field.js";
 import {query, queryAll} from "./utils.js";
+import {blackWin, whiteWin} from "./events.js";
 
 export class ChessBoard extends HTMLElement {
     board;
@@ -7,7 +8,11 @@ export class ChessBoard extends HTMLElement {
         super();
         this.id = id;
         this.color = color;
+        this.intact = {w_king_intact:1, w_short:1, w_long:1, b_king_intact:1, b_short:1, b_long:1};
+        this.en_passant = [-1, -1];
         this.init();
+
+
     }
 
     init(){
@@ -32,14 +37,45 @@ export class ChessBoard extends HTMLElement {
 
     static parseNewBoardFromServer(response){
         let array = JSON.parse(response.result);
-        console.log(array.board)
-        // const newArray = Object.keys(array).map((key)=> JSON.parse(array[key]))
+
+        query`chessboard-element`.setEnPassant(array.en_passant);
+        query`chessboard-element`.setIntact(JSON.parse(array.intact));
+
         for (let i=0;i<8;i++){
             for(let j=0;j<8;j++)
                 array.board[i][j] = JSON.parse(array.board[i][j])
         }
+
+        console.group('array')
+        console.log(query`chessboard-element`.getEnPassant());
+        console.log(query`chessboard-element`.getIntact());
         console.log(array.board)
+        console.log(array.mate)
+        if(array.mate[0] === 1)
+            document.body.dispatchEvent(blackWin)
+        if(array.mate[1] === 1)
+            document.body.dispatchEvent(whiteWin)
+
+        console.groupEnd()
+
         return array.board;
+    }
+
+    getIntact(){
+        let w_king = this.intact.w_king_intact;
+        let b_king = this.intact.b_king_intact;
+        let w_short = this.intact.w_short;
+        let w_long = this.intact.w_long;
+        let b_short = this.intact.b_short;
+        let b_long = this.intact.b_long;
+        return {
+            'w_king_intact': w_king,
+            'w_short': w_short,
+            'w_long': w_long,
+            'b_king_intact': b_king,
+            'b_short': b_short,
+            'b_long': b_long
+        }
     }
 
     getKings(){
@@ -61,9 +97,28 @@ export class ChessBoard extends HTMLElement {
         return this.board;
     }
 
+    getEnPassant(){
+        return this.en_passant;
+    }
+
+    setEnPassant(content){
+        this.en_passant = content
+
+    }
+
     setBoard(board) {
         this.board = board
     }
+
+    setIntact(content){
+        this.intact.w_king_intact = content.w_king_intact;
+        this.intact.b_king_intact = content.b_king_intact;
+        this.intact.b_short = content.b_short;
+        this.intact.b_long = content.b_long;
+        this.intact.w_short = content.w_short;
+        this.intact.w_long = content.w_long;
+    }
+
 
     promotePawn(row, column, content){
         let field = document.getElementById(row*8+column);
@@ -164,6 +219,7 @@ export class ChessBoard extends HTMLElement {
         });
         query`chessboard-element`.setBoard(board);
     }
+
 }
 
 if (!window.customElements.get('chessboard-element'))
