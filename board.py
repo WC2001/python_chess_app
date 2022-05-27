@@ -1,3 +1,5 @@
+import random
+
 from figures import Piece, Rook, Knight, Bishop, Pawn, Empty, Queen, King
 
 
@@ -77,8 +79,6 @@ class Board:
                 break
             if self.board[x][y + i].color != color and self.board[x][y + i].color != '' and \
                     (self.board[x][y + i].piece == 'Q' or self.board[x][y + i].piece == 'R'):
-                print(x, y)
-                print('1', (x, y+i))
                 return True
             i += 1
         i = 1
@@ -90,7 +90,6 @@ class Board:
                 break
             if self.board[x][y - i].color != color and self.board[x][y - i].color != '' and \
                     (self.board[x][y - i].piece == 'Q' or self.board[x][y - i].piece == 'R'):
-                print('2', (x, y-i))
                 return True
             i += 1
 
@@ -103,7 +102,6 @@ class Board:
                 break
             if self.board[x - i][y].color != color and self.board[x - i][y].color != '' and \
                     (self.board[x - i][y].piece == 'Q' or self.board[x - i][y].piece == 'R'):
-                print('3', (x-i, y))
                 return True
             i += 1
 
@@ -116,7 +114,6 @@ class Board:
                 break
             if self.board[x + i][y].color != color and self.board[x + i][y].color != '' and \
                     (self.board[x + i][y].piece == 'Q' or self.board[x + i][y].piece == 'R'):
-                print('4', (x+i, y))
                 return True
             i += 1
 
@@ -129,7 +126,6 @@ class Board:
                 break
             if self.board[x - i][y - i].color != color and self.board[x - i][y - i].color != '' and \
                     (self.board[x - i][y - i].piece == 'Q' or self.board[x - i][y - i].piece == 'B'):
-                print('5', (x-i, y-i))
                 return True
             i += 1
         i = 1
@@ -141,7 +137,6 @@ class Board:
                 break
             if self.board[x + i][y + i].color != color and self.board[x + i][y + i].color != '' and \
                     (self.board[x + i][y + i].piece == 'Q' or self.board[x + i][y + i].piece == 'B'):
-                print('6', (x+i, y+i))
                 return True
             i += 1
         i = 1
@@ -153,7 +148,6 @@ class Board:
                 break
             if self.board[x + i][y - i].color != color and self.board[x + i][y - i].color != '' and \
                     (self.board[x + i][y - i].piece == 'Q' or self.board[x + i][y - i].piece == 'B'):
-                print('7', (x+i, y-i))
                 return True
             i += 1
         i = 1
@@ -165,57 +159,42 @@ class Board:
                 break
             if self.board[x - i][y + i].color != color and self.board[x - i][y + i].color != '' and \
                     (self.board[x - i][y + i].piece == 'Q' or self.board[x - i][y + i].piece == 'B'):
-                print('8', (x-i, y+i))
                 return True
             i += 1
 
         if valid_field(x - 1, y - 2) and self.board[x - 1][y - 2].color != color and self.board[x - 1][y - 2].piece == 'k':
-            print('9')
             return True
         if valid_field(x - 2, y - 1) and self.board[x - 2][y - 1].color != color and self.board[x - 2][y - 1].piece == 'k':
-            print('10')
             return True
         if valid_field(x - 2, y + 1) and self.board[x - 2][y + 1].color != color and self.board[x - 2][y + 1].piece == 'k':
-            print('11')
             return True
         if valid_field(x - 1, y + 2) and self.board[x - 1][y + 2].color != color and self.board[x - 1][y + 2].piece == 'k':
-            print('12')
             return True
         if valid_field(x + 1, y + 2) and self.board[x + 1][y + 2].color != color and self.board[x + 1][y + 2].piece == 'k':
-            print('13')
             return True
         if valid_field(x + 2, y + 1) and self.board[x + 2][y + 1].color != color and self.board[x + 2][y + 1].piece == 'k':
-            print('14')
             return True
         if valid_field(x + 2, y - 1) and self.board[x + 2][y - 1].color != color and self.board[x + 2][y - 1].piece == 'k':
-            print('15')
             return True
         if valid_field(x + 1, y - 2) and self.board[x + 1][y - 2].color != color and self.board[x + 1][y - 2].piece == 'k':
-            print('16')
             return True
         if color == 'w':
             i = -1 if self.player == 'w' else 1
             if valid_field(x + i, y - 1) and self.board[x + i][y - 1].color == 'b' and self.board[x + i][y - 1].piece == 'P':
-                print('17')
                 return True
             if valid_field(x + i, y + 1) and self.board[x + i][y + 1].color == 'b' and self.board[x + i][y + 1].piece == 'P':
-                print('18')
                 return True
 
         if color == 'b':
             i = 1 if self.player == 'w' else -1
             if valid_field(x + i, y - 1) and self.board[x + i][y - 1].color == 'w' and self.board[x + i][y - 1].piece == 'P':
-                print('19')
                 return True
             if valid_field(x + i, y + 1) and self.board[x + i][y + 1].color == 'w' and self.board[x + i][y + 1].piece == 'P':
-                print('20')
                 return True
 
         if color == 'w' and abs(self.b_king_pos[0] - x) <= 1 and abs(self.b_king_pos[1] - y) <= 1:
-            print('21')
             return True
         if color == 'b' and abs(self.w_king_pos[0] - x) <= 1 and abs(self.w_king_pos[1] - y) <= 1:
-            print('22')
             return True
 
         return False
@@ -305,6 +284,8 @@ class Board:
 
         self.board[x1][y1] = self.board[x][y]
         self.board[x][y] = Empty()
+        if isinstance(self.board[x1][y1], Pawn) and not playerTurn and (x1 == 0 or x1 == 7):
+            self.upgradePawn(x1, y1, color)
         if color == 'w' and self.in_check(self.b_king_pos[0], self.b_king_pos[1]):
             print("Black king checked.")
             if not self.can_move('b'):
@@ -379,4 +360,17 @@ class Board:
     def mated(self):
         return self.w_king_mated or self.b_king_mated
 
+    def listAllMoves(self, color):
+        moves = []
+        for i in range(8):
+            for j in range(8):
+                if self.board[i][j].color == color:
+                    for move in self.list_possible_moves(i, j):
+                        moves.append((i, j, move[0], move[1]))
+        return moves
+
+    def upgradePawn(self, x, y, color):
+        i = random.randint(0, 4)
+        updates = [Knight, Queen, Rook, Bishop]
+        self.board[x][y] = updates[random.randint(0, 4)](color)
 

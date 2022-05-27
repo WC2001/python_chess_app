@@ -1,3 +1,5 @@
+import time
+
 from flask import Flask, render_template, request, jsonify, send_from_directory
 
 from board import Board
@@ -21,10 +23,6 @@ def moves():
     intact = request.json['intact']
     player = request.json['player']
     enpassant = request.json['en_passant']
-    # print(request.json['board'])
-    # print(request.json['intact'])
-    # print(request.json['position'])
-    # print(request.json['w_king'], request.json['b_king'])
     board = Board(inputboard, w_king, b_king, intact, player, enpassant)
 
     return jsonify({"result": board.list_possible_moves(request.json['position']['x'], request.json['position']['y'])})
@@ -48,20 +46,45 @@ def change():
     print('w', board.w_king_pos)
     print('b', board.b_king_pos)
     print('-----------')
-    # print(evaluate(board.board, color))
     if board.mated():
-        print('111')
         boardEncoder = BoardEncoder()
         res = BoardEncoder.encode(boardEncoder, board)
         return jsonify({"result": res})
-
+    start = time.time()
     if color == 'w':
-        score, bestmove, startmove = alphaBetaMin(-1000, 1000, board, "b", 3, color)
+        score, bestmove = alphaBetaMin(-10000, 10000, board, "b", 3, color)
     else:
-        score, bestmove, startmove = alphaBetaMax(-1000, 1000, board, "w", 3, color)
-    board.move(startmove[0], startmove[1], bestmove[0], bestmove[1])
+        score, bestmove = alphaBetaMax(-10000, 10000, board, "w", 3, color)
+    board.move(bestmove[0], bestmove[1], bestmove[2], bestmove[3])
+    print(time.time() - start)
 
-    # print(evaluate(board.board, color))
+    print('w', board.w_king_pos)
+    print('b', board.b_king_pos)
+    print('-----------')
+    boardEncoder = BoardEncoder()
+    res = BoardEncoder.encode(boardEncoder, board)
+    return jsonify({"result": res})
+
+
+@app.route("/firstMove", methods=['POST'])
+def firstMove():
+    inputboard = request.json['board']
+    w_king = request.json['w_king']
+    b_king = request.json['b_king']
+    intact = request.json['intact']
+    player = request.json['player']
+    enpassant = request.json['en_passant']
+
+    board = Board(inputboard, w_king, b_king, intact, player, enpassant)
+
+    print('w', board.w_king_pos)
+    print('b', board.b_king_pos)
+    print('-----------')
+
+    if player == 'b':
+        score, bestmove = alphaBetaMax(-10000, 10000, board, "w", 3, player)
+        board.move(bestmove[0], bestmove[1], bestmove[2], bestmove[3])
+
     print('w', board.w_king_pos)
     print('b', board.b_king_pos)
     print('-----------')
