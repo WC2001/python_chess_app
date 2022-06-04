@@ -53,9 +53,9 @@ export class MoveList extends HTMLElement{
         })
     }
 
-    update(whiteMoves, blackMoves) {
-      this.whiteMoves = whiteMoves;
-      this.blackMoves = blackMoves;
+    update(whiteMove, blackMove) {
+      this.whiteMoves.push(whiteMove);
+      this.blackMoves.push(blackMove);
       this.rerender();
       document.querySelector("move-list-element>.white").scrollTop = document.querySelector("move-list-element>.white").scrollHeight;
       document.querySelector("move-list-element>.black").scrollTop = document.querySelector("move-list-element>.white").scrollHeight;

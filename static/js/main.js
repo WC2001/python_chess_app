@@ -32,7 +32,6 @@ class Game {
           gameoverPopUp.init(document.body);
       });
 
-      // document.body.dispatchEvent(blackWin);
   }
 
 
