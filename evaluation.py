@@ -69,7 +69,6 @@ def alphaBetaMin(alpha, beta, chessBoard, color, depth, player):
             for move in chessBoard.list_possible_moves(i//8, i % 8):
                 figureCaptured = chessBoard.board[move[0]][move[1]]
                 figureMoved = chessBoard.board[i // 8][i % 8]
-                figureCaptured = chessBoard.board[move[0]][move[1]]
                 chessBoard.board[i // 8][i % 8] = Empty()
                 chessBoard.board[move[0]][move[1]] = figureMoved
                 if isinstance(figureMoved, King):
