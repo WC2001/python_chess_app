@@ -14,8 +14,8 @@ class BoardEncoder(json.JSONEncoder):
                 ],
                 'intact': BoardIntactEncoder().encode(obj),
                 'en_passant': [obj.return_en_passant[0], obj.return_en_passant[1]],
-                'mate': [obj.w_king_mated, obj.b_king_mated]
-
+                'mate': [obj.w_king_mated, obj.b_king_mated],
+                'stalemate': obj.draw
             }
             return res
 

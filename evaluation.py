@@ -33,8 +33,10 @@ def alphaBetaMax(alpha, beta, chessBoard, color, depth, player):
                 figureMoved = chessBoard.board[i // 8][i % 8]
                 chessBoard.board[i // 8][i % 8] = Empty()
                 chessBoard.board[move[0]][move[1]] = figureMoved
+                if isinstance(figureMoved, Pawn) and (move[0] == 0 or move[0] == 7):
+                    chessBoard.upgrade_pawn(move[0], move[1], figureMoved.color)
                 if isinstance(figureMoved, King):
-                    chessBoard.setKingPosition(figureMoved.color, move[0], move[1])
+                    chessBoard.set_king_position(figureMoved.color, move[0], move[1])
                 score, bmove, bstart = alphaBetaMin(alpha, beta, chessBoard, color_op, depth - 1, player)
                 alpha = max(score, alpha)
                 if maxval <= score:
@@ -44,7 +46,7 @@ def alphaBetaMax(alpha, beta, chessBoard, color, depth, player):
                 chessBoard.board[i // 8][i % 8] = figureMoved
                 chessBoard.board[move[0]][move[1]] = figureCaptured
                 if isinstance(figureMoved, King):
-                    chessBoard.setKingPosition(figureMoved.color, i // 8, i % 8)
+                    chessBoard.set_king_position(figureMoved.color, i // 8, i % 8)
                 if beta <= alpha:
                     break
 
@@ -71,8 +73,10 @@ def alphaBetaMin(alpha, beta, chessBoard, color, depth, player):
                 figureMoved = chessBoard.board[i // 8][i % 8]
                 chessBoard.board[i // 8][i % 8] = Empty()
                 chessBoard.board[move[0]][move[1]] = figureMoved
+                if isinstance(figureMoved, Pawn) and (move[0] == 0 or move[0] == 7):
+                    chessBoard.upgrade_pawn(move[0], move[1], figureMoved.color)
                 if isinstance(figureMoved, King):
-                    chessBoard.setKingPosition(figureMoved.color, move[0], move[1])
+                    chessBoard.set_king_position(figureMoved.color, move[0], move[1])
                 score, bmove, bstart = alphaBetaMax(alpha, beta, chessBoard, color_op, depth - 1, player)
                 beta = min(score, beta)
                 if score <= minval:
@@ -80,7 +84,7 @@ def alphaBetaMin(alpha, beta, chessBoard, color, depth, player):
                     bestmove = move
                     beststart = (i // 8, i % 8)
                 if isinstance(figureMoved, King):
-                    chessBoard.setKingPosition(figureMoved.color, i//8, i % 8)
+                    chessBoard.set_king_position(figureMoved.color, i//8, i % 8)
                 chessBoard.board[i // 8][i % 8] = figureMoved
                 chessBoard.board[move[0]][move[1]] = figureCaptured
 

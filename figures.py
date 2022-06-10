@@ -31,6 +31,9 @@ class Empty(Piece):
     def list_possible_moves(self, x, y, board):
         return []
 
+    def to_string(self):
+        return ''
+
 
 class Rook(Piece):
     def __init__(self, color):
@@ -71,6 +74,9 @@ class Rook(Piece):
                 break
         return res
 
+    def to_string(self):
+        return 'R'
+
 
 class Knight(Piece):
     def __init__(self, color):
@@ -107,6 +113,9 @@ class Knight(Piece):
         if valid_field(x + 1, y - 2) and board[x + 1][y - 2].color != self.color:
             res.append((x + 1, y - 2))
         return res
+
+    def to_string(self):
+        return 'k'
 
 
 class Bishop(Piece):
@@ -155,6 +164,9 @@ class Bishop(Piece):
             i += 1
 
         return res
+
+    def to_string(self):
+        return 'B'
 
 
 class Pawn(Piece):
@@ -218,6 +230,9 @@ class Pawn(Piece):
 
         return res
 
+    def to_string(self):
+        return 'P'
+
 
 class Queen(Bishop, Rook):
     def __init__(self, color):
@@ -234,6 +249,9 @@ class Queen(Bishop, Rook):
 
     def list_possible_moves(self, x, y, board):
         return Bishop.list_possible_moves(self, x, y, board) + Rook.list_possible_moves(self, x, y, board)
+
+    def to_string(self):
+        return 'Q'
 
 
 class King(Piece):
@@ -274,47 +292,52 @@ class King(Piece):
         if self.color == 'w' and chessboard.w_king_intact and chessboard.w_short:
             if chessboard.player == 'w' and isinstance(board[x][y + 1], Empty) and \
                     isinstance(board[x][y + 2], Empty):
-                if chessboard.test_move((x, y + 1), x, y) and chessboard.test_move((x, y + 2), x, y):
+                if chessboard.test_move((x, y + 1), x, y) and chessboard.test_move((x, y + 2), x, y) and not chessboard.in_check(x, y):
                     res.append((x, y + 2))
 
             if chessboard.player == 'b' and isinstance(board[x][y - 1], Empty) and \
                     isinstance(board[x][y - 2], Empty):
-                if chessboard.test_move((x, y - 1), x, y) and chessboard.test_move((x, y - 2), x, y):
+                if chessboard.test_move((x, y - 1), x, y) and chessboard.test_move((x, y - 2), x, y) and not chessboard.in_check(x, y):
                     res.append((x, y - 2))
 
         if self.color == 'w' and chessboard.w_king_intact and chessboard.w_long:
 
             if chessboard.player == 'w' and isinstance(board[x][y - 1], Empty) and \
                     isinstance(board[x][y - 2], Empty) and isinstance(board[x][y - 3], Empty):
-                if chessboard.test_move((x, y - 1), x, y) and chessboard.test_move((x, y - 2), x, y):
+                if chessboard.test_move((x, y - 1), x, y) and chessboard.test_move((x, y - 2), x, y) and not chessboard.in_check(x,y):
                     res.append((x, y - 2))
 
             if chessboard.player == 'b' and isinstance(board[x][y + 1], Empty) and \
                     isinstance(board[x][y + 2], Empty) and isinstance(board[x][y + 3], Empty):
-                if chessboard.test_move((x, y + 1), x, y) and chessboard.test_move((x, y + 2), x, y):
+                if chessboard.test_move((x, y + 1), x, y) and chessboard.test_move((x, y + 2), x, y) and not chessboard.in_check(x,y):
                     res.append((x, y + 2))
 
         if self.color == 'b' and chessboard.b_king_intact and chessboard.b_short:
             if chessboard.player == 'w' and isinstance(board[x][y + 1], Empty) and \
                     isinstance(board[x][y + 2], Empty):
-                if chessboard.test_move((x, y + 1), x, y) and chessboard.test_move((x, y + 2), x, y):
+                if chessboard.test_move((x, y + 1), x, y) and chessboard.test_move((x, y + 2), x, y) and not chessboard.in_check(x,y):
                     res.append((x, y + 2))
 
             if chessboard.player == 'b' and isinstance(board[x][y - 1], Empty) and \
                     isinstance(board[x][y - 2], Empty):
-                if chessboard.test_move((x, y - 1), x, y) and chessboard.test_move((x, y - 2), x, y):
+                if chessboard.test_move((x, y - 1), x, y) and chessboard.test_move((x, y - 2), x, y) and not chessboard.in_check(x,y):
                     res.append((x, y - 2))
 
         if self.color == 'b' and chessboard.b_king_intact and chessboard.b_long:
 
             if chessboard.player == 'w' and isinstance(board[x][y - 1], Empty) and \
                     isinstance(board[x][y - 2], Empty) and isinstance(board[x][y - 3], Empty):
-                if chessboard.test_move((x, y - 1), x, y) and chessboard.test_move((x, y - 2), x, y):
+                if chessboard.test_move((x, y - 1), x, y) and chessboard.test_move((x, y - 2), x, y) and not chessboard.in_check(x, y):
                     res.append((x, y - 2))
 
             if chessboard.player == 'b' and isinstance(board[x][y + 1], Empty) and \
                     isinstance(board[x][y + 2], Empty) and isinstance(board[x][y + 3], Empty):
-                if chessboard.test_move((x, y + 1), x, y) and chessboard.test_move((x, y + 2), x, y):
+                if chessboard.test_move((x, y + 1), x, y) and chessboard.test_move((x, y + 2), x, y) and not chessboard.in_check(x, y):
                     res.append((x, y + 2))
 
         return res
+
+    def to_string(self):
+        return 'K'
+
+

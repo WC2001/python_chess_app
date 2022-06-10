@@ -67,6 +67,7 @@ class Board:
         self.return_en_passant = en_passant
         self.w_king_mated = 0
         self.b_king_mated = 0
+        self.draw = 0
 
     def in_check(self, x, y):
         color = self.board[x][y].color
@@ -252,27 +253,27 @@ class Board:
 
     def move(self, x, y, x1, y1):
         color = self.board[x][y].color
-        playerTurn = color == self.player
+        player_turn = color == self.player
 
         if isinstance(self.board[x][y], King):
             print('king')
-            self.setKingPosition(color, x1, y1)
-            self.updateCastle(x, y, y1)
-        self.setEnPassant(playerTurn, -1, -1)
+            self.set_king_position(color, x1, y1)
+            self.update_castle(x, y, y1)
+        self.set_en_passant(player_turn, -1, -1)
         if isinstance(self.board[x][y], Pawn):
-            self.en_passantUpdate(color, x, y, x1)
+            self.en_passant_update(color, x, y, x1)
 
         if isinstance(self.board[x][y], Rook) and self.player == 'w':
             if y == 0:
-                self.changeIntact(color, long=True)
+                self.change_intact(color, long=True)
             if y == 7:
-                self.changeIntact(color, short=True)
+                self.change_intact(color, short=True)
 
         if isinstance(self.board[x][y], Rook) and self.player == 'b':
             if y == 0:
-                self.changeIntact(color, short=True)
+                self.change_intact(color, short=True)
             if y == 7:
-                self.changeIntact(color, long=True)
+                self.change_intact(color, long=True)
 
         if self.player == self.board[x][y].color and self.board[x][y].piece == 'P' and \
                 x1 == self.return_en_passant[0] and y1 == self.return_en_passant[1]:
@@ -284,7 +285,10 @@ class Board:
         self.board[x1][y1] = self.board[x][y]
         self.board[x][y] = Empty()
         if isinstance(self.board[x1][y1], Pawn) and (x1 == 0 or x1 == 7):
-            self.upgradePawn(x1, y1, color)
+            self.upgrade_pawn(x1, y1, color)
+
+        if self.if_stalemate(color):
+            self.draw = 1
         if color == 'w' and self.in_check(self.b_king_pos[0], self.b_king_pos[1]):
             print("Black king checked.")
             if not self.can_move('b'):
@@ -296,22 +300,28 @@ class Board:
                 self.w_king_mated = 1
                 print("White king mated")
 
-    def setKingPosition(self, color, x, y):
+    def unmove(self, x, y, y1, x1, figure):
+        color = self.board[x][y].color
+        self.board[x][y] = self.board[x1][y1]
+        self.board[x1][y1] = figure
+        if isinstance(self.board[x][y], King):
+            self.set_king_position(x, y, color)
+
+    def set_king_position(self, color, x, y):
         if color == 'w':
             self.w_king_pos = (x, y)
         else:
             self.b_king_pos = (x, y)
 
-    def en_passantUpdate(self, color, x, y, x1):
+    def en_passant_update(self, color, x, y, x1):
         playerTurn = color == self.player
-        self.setEnPassant(playerTurn, -1, -1)
+        self.set_en_passant(playerTurn, -1, -1)
         if x == 6 and x1 == 4:
-            self.setEnPassant(playerTurn, 5, y)
+            self.set_en_passant(playerTurn, 5, y)
         elif x == 1 and x1 == 3:
-            self.setEnPassant(playerTurn, 2, y)
+            self.set_en_passant(playerTurn, 2, y)
 
-
-    def setEnPassant(self, playerTurn, x, y):
+    def set_en_passant(self, playerTurn, x, y):
         if playerTurn:
             self.en_passant[0] = x
             self.en_passant[1] = y
@@ -319,28 +329,28 @@ class Board:
             self.return_en_passant[0] = x
             self.return_en_passant[1] = y
 
-    def updateCastle(self, x, y, y1):
+    def update_castle(self, x, y, y1):
         color = self.board[x][y].color
         if self.player == 'w':
             if y1 == y + 2:
                 self.move(x, y+3, x, y+1)
-                self.changeIntact(color, king=True, short=True)
+                self.change_intact(color, king=True, short=True)
             if y1 == y - 2:
                 self.move(x, y - 4, x, y - 1)
-                self.changeIntact(color, king=True, long=True)
+                self.change_intact(color, king=True, long=True)
             else:
-                self.changeIntact(color, king=True)
+                self.change_intact(color, king=True)
         else:
             if y1 == y - 2:
                 self.move(x, y - 3, x, y - 1)
-                self.changeIntact(color, king=True, short=True)
+                self.change_intact(color, king=True, short=True)
             if y1 == y + 2:
                 self.move(x, y + 4, x, y + 1)
-                self.changeIntact(color, king=True, long=True)
+                self.change_intact(color, king=True, long=True)
             else:
-                self.changeIntact(color, king=True)
+                self.change_intact(color, king=True)
 
-    def changeIntact(self, color, king=False, long=False, short=False):
+    def change_intact(self, color, king=False, long=False, short=False):
         if color == 'w':
             if king:
                 self.w_king_intact = 0
@@ -359,7 +369,31 @@ class Board:
     def mated(self):
         return self.w_king_mated or self.b_king_mated
 
+    def upgrade_pawn(self, x, y, color):
+        updates = [Queen, Queen, Queen, Queen, Queen, Queen, Queen, Queen, Queen, Queen, Knight]
+        self.board[x][y] = updates[randint(0, 10)](color)
 
-    def upgradePawn(self, x, y, color):
-        updates = [Knight, Queen, Rook, Bishop]
-        self.board[x][y] = updates[randint(0, 4)](color)
+    def get_field_description(self, x, y):
+        line = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+        if self.player == 'b':
+            line = line[::-1]
+            return line[y] + str(x+1)
+        return line[y] + str(8-x)
+
+    def get_move_description(self, x, y, x1, y1):
+        piece = self.board[x][y].to_string()
+        description = str(self.get_field_description(x1, y1))
+
+        return piece + description
+
+    def if_stalemate(self, color):
+        if color == 'b':
+            if not self.in_check(self.w_king_pos[0], self.w_king_pos[1]) and not self.can_move('w'):
+                return True
+
+        if color == 'w':
+            if not self.in_check(self.b_king_pos[0], self.b_king_pos[1]) and not self.can_move("b"):
+                return True
+
+        return False
+

@@ -14,6 +14,12 @@ export const blackWin = new CustomEvent('gameover', {
   }
 });
 
+export const draw = new CustomEvent('gameover', {
+  detail: {
+      winner: "draw"
+  }
+});
+
 export const pieceChosen = new CustomEvent('piecechosen', {
     detail: {}
 });

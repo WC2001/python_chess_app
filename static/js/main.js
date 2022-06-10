@@ -1,7 +1,6 @@
 import {ChessBoard} from "./board.js";
 import {ColorPopUp} from "./colorPopUp.js";
 import {GameOverPopUp} from "./gameOverPopUp.js";
-import {blackWin} from "./events.js";
 import {MoveList} from "./moveList.js";
 import {query} from "./utils.js";
 
@@ -16,8 +15,10 @@ class Game {
         this.#board = new ChessBoard(100, localStorage.getItem('color'));
         this.#moveList = new MoveList();
         this.#moveList.init(query`#container`);
-        this.#moveList.update([...this.#moveList.whiteMoves], [...this.#moveList.blackMoves]);
-        const response = await fetch('/firstMove', {
+        this.#moveList.update(this.#moveList.whiteMoves, this.#moveList.blackMoves);
+
+        if (localStorage.getItem('color') === 'b'){
+            const response = await fetch('/firstMove', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -37,9 +38,12 @@ class Game {
 
         })
         const data = await response.json();
+        console.log(data);
         this.#board = ChessBoard.parseNewBoardFromServer(data);
         console.log(this.#board);
         ChessBoard.rerender(this.#board);
+        }
+
     })
   }
   static getInstance(){

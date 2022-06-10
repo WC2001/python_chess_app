@@ -7,9 +7,16 @@ export class GameOverPopUp extends HTMLElement {
     }
 
     init(mountpoint) {
+
         const container = create`div${['pop-up-container']}`;
         const title = document.createElement("h1");
-        title.innerHTML = `${ this.winner } Player Won The Game !!!`
+
+        if (this.winner === "draw"){
+            title.innerHTML = `Stalemate, game drawn !!!`
+        }
+        else{
+            title.innerHTML = `${ this.winner } Player Won The Game !!!`
+        }
         container.append(title);
         if ( this.winner === "w" ) {
             const white = create`i${['far','fa-chess-king']}`;

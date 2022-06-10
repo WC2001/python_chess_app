@@ -1,6 +1,6 @@
 import {ChessField} from "./field.js";
 import {query, queryAll} from "./utils.js";
-import {blackWin, whiteWin} from "./events.js";
+import {blackWin, whiteWin, draw} from "./events.js";
 
 export class ChessBoard extends HTMLElement {
     board;
@@ -36,7 +36,14 @@ export class ChessBoard extends HTMLElement {
     }
 
     static parseNewBoardFromServer(response){
+
+        query`move-list-element`.updateLists(response.move_description[0], response.move_description[1])
+        query`move-list-element`.update(query`move-list-element`.getLists().white, query`move-list-element`.getLists().black)
         let array = JSON.parse(response.result);
+
+        if (array.stalemate === 1){
+            document.body.dispatchEvent(draw)
+        }
 
         query`chessboard-element`.setEnPassant(array.en_passant);
         query`chessboard-element`.setIntact(JSON.parse(array.intact));
